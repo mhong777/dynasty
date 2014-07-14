@@ -1,0 +1,13 @@
+'use strict';
+
+//Owners service used to communicate Owners REST endpoints
+angular.module('owners').factory('Owners', ['$resource',
+	function($resource) {
+		return $resource('owners/:ownerId', { ownerId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);

@@ -1,0 +1,111 @@
+<section data-ng-controller="ReviewRosterController" data-ng-init="findOne()"  data-ng-show="authentication.user">  
+   <h3>{{owner.name}}</h3>   
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Players on Contract: {{owner.totalPlayers}}</h4>
+        </div>
+        <div class="col-md-4">
+            <h4>Salary: {{owner.totalCap | currency}}</h4>
+        </div>        
+        <div class="col-md-4">
+            <h4 ng-class="availableCap()">Available Cap: {{salaryCap-owner.totalCap | currency}}</h4>
+        </div>        
+    </div>
+    <h3>On Roster</h3>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+           <tr>
+                <th colspan="2">
+                    <b>Name</b>
+                </th>
+                <th>
+                    <b>Salary</b>
+                </th>
+                <th>
+                    <b>2014 Rank</b>
+                </th>
+                <th>
+                    <b>2013 Rank</b>
+                </th>
+                <th>
+                    <b>Contract Year</b>
+                </th>               
+                <th>
+                    <b>Bye Week</b>
+                </th>
+           </tr>
+        </thead>
+        <tbody ng-repeat="positionType in owner.paidPlayer | orderBy:positionList">
+            <tr>
+                <td colspan="7" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players: {{positionType.cost | currency}})</td>                        
+            </tr>
+            <tr ng-repeat="paidPlayer in positionType.roster">
+                <td ng-hide="checkUser()" colspan="2" ng-click="goToEspn(paidPlayer.link)">{{paidPlayer.name}} ({{paidPlayer.team}})</td>
+                <td ng-show="checkUser()"><input type="checkbox" ng-model="paidPlayer.available" ng-Change="cutPlayer(paidPlayer._id, paidPlayer.position )"></td> 
+                <td ng-show="checkUser()" ng-click="goToEspn(paidPlayer.link)">{{paidPlayer.name}} ({{paidPlayer.team}})</td>
+<!--
+                <td><input type="checkbox" ng-model="paidPlayer.available" ng-Change="cutPlayer(paidPlayer._id, paidPlayer.position )"></td> 
+                <td>{{paidPlayer.name}} ({{paidPlayer.team}})</td>
+-->
+                <td>{{paidPlayer.price[1] | currency}}</td>
+                <td>{{paidPlayer.startRank.absRank[1]}} ({{paidPlayer.position}}{{paidPlayer.startRank.posRank[1]}})</td>
+                <td>{{paidPlayer.endRank.absRank[0]}} ({{paidPlayer.position}}{{paidPlayer.endRank.posRank[0]}})</td>
+                <td>{{paidPlayer.contractYear}}</td>
+                <td>{{paidPlayer.byeWeek[1]}}</td>                
+            </tr>
+        </tbody>
+    </table>      
+    <b>Cut</b>
+    <table class="table table-striped table-bordered">
+        <thead>
+           <tr>
+                <th colspan="3">
+                    <b>Name</b>
+                </th>
+                <th>
+                    <b>Salary</b>
+                </th>
+                <th>
+                    <b>2014 Rank</b>
+                </th>
+                <th>
+                    <b>2013 Rank</b>
+                </th>
+                <th>
+                    <b>Contract Year</b>
+                </th>               
+                <th>
+                    <b>Bye Week</b>
+                </th>
+           </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="cutPlayer in owner.cutPlayer">
+                <td ng-show="checkUser()"><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
+                <td>{{cutPlayer.position}}</td>
+                <td ng-hide="checkUser()" ng-click="goToEspn(cutPlayer.link)" colspan="2">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
+                <td ng-show="checkUser()" ng-click="goToEspn(cutPlayer.link)">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
+<!--
+                <td><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
+                <td>{{cutPlayer.position}}</td>
+                <td>{{cutPlayer._id}} {{cutPlayer.name}} ({{cutPlayer.team}})</td>
+-->
+                <td>{{cutPlayer.price[1] | currency}}</td>
+                <td>{{cutPlayer.startRank.absRank[1]}} ({{cutPlayer.position}}{{cutPlayer.startRank.posRank[1]}})</td>
+                <td>{{cutPlayer.endRank.absRank[0]}} ({{cutPlayer.position}}{{cutPlayer.endRank.posRank[0]}})</td>
+                <td>{{cutPlayer.contractYear}}</td>
+                <td>{{cutPlayer.byeWeek[1]}}</td>                
+            </tr>
+        </tbody>
+                
+<!--
+        <tbody>
+            <tr ng-repeat="cutPlayer in owner.cutPlayer">
+                <td>{{cutPlayer.name}}</td>
+
+            </tr>
+        </tbody>
+-->
+    </table>          
+    
+</section>

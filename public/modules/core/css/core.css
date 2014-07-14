@@ -1,0 +1,26 @@
+.content {
+	margin-top: 50px;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+
+.positionRow{
+    background-color:#C3DFC9 !important;
+    font-weight:bold;
+}
+
+.positionHeader{
+/*    font-size:1.2em;*/
+}
+
+.underCap{
+    color:green;
+}
+
+.overCap{
+    color:red;
+}
