@@ -184,12 +184,27 @@ exports.addCutPlayer = function(req,res){
 				message: getErrorMessage(err)
 			});
 		} else {
+//            owner.cutPlayer=[];
+            owner.totalCap=owner.totalCap-28.7;
+            owner.totalPlayers--;
             owner.cutPlayer=req.body.cutPlayer;
             owner.save();
-            res.jsonp(owner.cutPlayer);
+//            res.jsonp(owner.cutPlayer);
 //            res.jsonp(owner);
         }
-	});      
+	});  
+    Player.findById(req.body.cutPlayer).exec(function(err, player) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+            player.available=true;
+            player.unavailable=false;
+            player.save();
+            res.jsonp(player);
+        }
+	});         
 };
 
 exports.changePlayer = function(req,res) {
