@@ -2,13 +2,13 @@
    <h3>{{owner.name}}</h3>   
     <div class="row">
         <div class="col-md-4">
-            <h4>Players on Contract: {{owner.totalPlayers}}</h4>
+            <h4>Players on Contract: {{totalPlayers(owner)}}</h4>
         </div>
         <div class="col-md-4">
-            <h4>Salary: {{owner.totalCap | currency}}</h4>
+            <h4>Salary: {{totalSalary(owner) | currency}}</h4>
         </div>        
         <div class="col-md-4">
-            <h4 ng-class="availableCap()">Available Cap: {{salaryCap-owner.totalCap | currency}}</h4>
+            <h4 ng-class="availableCap()">Available Cap: {{salaryCap-totalSalary(owner) | currency}}</h4>
         </div>        
     </div>
     <h3>On Roster</h3>
@@ -37,7 +37,7 @@
         </thead>
         <tbody ng-repeat="positionType in owner.paidPlayer | orderBy:positionList">
             <tr>
-                <td colspan="7" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players: {{positionType.cost | currency}})</td>                        
+                <td colspan="7" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players: {{salaryPosition(positionType.name, owner) | currency}})</td>                        
             </tr>
             <tr ng-repeat="paidPlayer in positionType.roster">
                 <td ng-hide="checkUser()" colspan="2" ng-click="goToEspn(paidPlayer.link)">{{paidPlayer.name}} ({{paidPlayer.team}})</td>

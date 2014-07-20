@@ -90,14 +90,3 @@ var PlayerSchema = new Schema({
 
 mongoose.model('Player', PlayerSchema);
 
-//var nflPlayers=[
-//    {name:"player1", available:false, price:1, position:"QB", listed:false, rank:9, contract:1, unavailable:true, index:0},
-//    {name:"player2", available:false, price:2, position:"QB", listed:false, rank:8, contract:1, unavailable:true, index:1},
-//    {name:"player3", available:false, price:3, position:"RB", listed:false, rank:7, contract:1, unavailable:true, index:2},
-//    {name:"player4", available:false, price:4, position:"WR", listed:false, rank:6, contract:1, unavailable:true, index:3},
-//    {name:"player5", available:false, price:5, position:"TE", listed:false, rank:5, contract:1, unavailable:true, index:4},
-//    {name:"player6", available:false, price:6, position:"D", listed:false, rank:4, contract:1, unavailable:true, index:5},
-//    {name:"player7", available:false, price:7, position:"QB", listed:false, rank:3, contract:1, unavailable:true, index:6},
-//    {name:"player8", available:false, price:8, position:"QB", listed:false, rank:2, contract:1, unavailable:true, index:7},
-//    {name:"player9", available:false, price:9, position:"QB", listed:false, rank:1, contract:1, unavailable:true, index:8}
-//];

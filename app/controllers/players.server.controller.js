@@ -109,7 +109,7 @@ exports.list = function(req, res) { Player.find().sort('-created').populate('use
 /**
  * Player middleware
  */
-exports.playerByID = function(req, res, next, id) { Player.findById(id).populate('user', 'displayName').exec(function(err, player) {
+exports.playerByID = function(req, res, next, id) { Player.findById(id).populate('owner', 'name').exec(function(err, player) {
 		if (err) return next(err);
 		if (! player) return next(new Error('Failed to load Player ' + id));
 		req.player = player ;

@@ -4,7 +4,52 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
 	function($scope, $stateParams, $location, Authentication, Owners, $http ) {
 		$scope.authentication = Authentication;
 		// Review roster controller logic
-		// ...
+
+        /************
+        METRICS
+        *************/
+        //get the total number of players
+        $scope.totalPlayers = function(owner){
+            var totPlayer=0;
+            for(var i=0; i<owner.paidPlayer.length;i++){
+                totPlayer+=owner.paidPlayer[i].roster.length;
+            }
+            return totPlayer
+        };
+        
+        //get the total salary of an owner
+        $scope.totalSalary = function(owner){
+            var totSalary=0;
+            for(var i=0; i<owner.paidPlayer.length;i++){
+                for(var y=0; y<owner.paidPlayer[i].roster.length;y++){
+                    totSalary+=owner.paidPlayer[i].roster[y].price[1];    
+                }                
+            }
+            return totSalary;
+        };
+        
+        //get number of players in a given position
+        $scope.numPosition = function(position, owner){
+            for(var i=0; i<owner.paidPlayer.length;i++){
+                if(owner.paidPlayer[i].name===position){                    
+                    return owner.paidPlayer[i].roster.length;
+                }   
+            }
+        };
+        
+        //get the cost of a given position
+        $scope.salaryPosition = function(position, owner){
+            var posSalary=0;
+            for(var i=0; i<owner.paidPlayer.length;i++){
+                if(owner.paidPlayer[i].name===position){     
+                    for(var y=0;y<owner.paidPlayer[i].roster.length;y++){
+                        posSalary+=owner.paidPlayer[i].roster[y].price[1];    
+                    }
+                    return posSalary;
+                }   
+            }            
+        };
+        
         //define salary cap
         $scope.salaryCap=300;
         $scope.availableCap=function(){
@@ -16,25 +61,15 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             }
         };
         
-        
+        /********
+        INITIALIZATION FUNCTIONS
+        ********/
 		// Find existing Owner
 		$scope.findOne = function() {
 			$scope.owner = Owners.get({ 
 				ownerId: $stateParams.ownerId
 			});
-		};        
-        // Get link and go to link
-        //if no link is there do something else
-        $scope.goToEspn=function(playerLink){
-            if(playerLink===''){
-                window.open('http://games.espn.go.com/frontpage/football', '_newtab');
-                return;
-            }
-            else{
-                window.open(playerLink,'_newtab');  
-                return;
-            }
-        };
+		};
         
         //FUNCTION FOR CHECKING USER
         $scope.checkUser=function(){
@@ -44,6 +79,9 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             else{return false;}
         };
         
+        /*******
+        FOR SORTING
+        ******/
         $scope.positionList=function(position){
             if(position.name==='QB'){
                 return 1;
@@ -64,12 +102,22 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                 return 6;
             }
         };
-    
-        //UPDATE SALARY TEST
-        $scope.updateSalaryTest=function(ownerId){
-            $scope.totalCap=0;
-            $http.put('http://localhost:3000/ownerUpdate/' + ownerId, $scope.totalCap);
-        };        
+
+        /*******
+        MAIN FUNCTIONALITY
+        ********/
+        // Get link and go to link
+        //if no link is there do something else
+        $scope.goToEspn=function(playerLink){
+            if(playerLink===''){
+                window.open('http://games.espn.go.com/frontpage/football', '_newtab');
+                return;
+            }
+            else{
+                window.open(playerLink,'_newtab');  
+                return;
+            }
+        };          
         
         //FUNCTION FOR CHECKBOX TO CUT PLAYER
         $scope.cutPlayer=function(playerId, positionId){
@@ -82,14 +130,14 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                         if($scope.owner.paidPlayer[i].roster[j]._id===playerId){
                             //put player on cut list
                             $scope.owner.paidPlayer[i].roster[j].unavailable=false;
-                            salary = $scope.owner.paidPlayer[i].roster[j].price[1];                            
+//                            salary = $scope.owner.paidPlayer[i].roster[j].price[1];                            
                             $scope.owner.cutPlayer.push($scope.owner.paidPlayer[i].roster[j]);                                                        
                             //remove player from paid player list
                             //alter local variables
                             $scope.owner.paidPlayer[i].roster.splice(j,1);
-                            $scope.owner.totalPlayers--;                            
-                            $scope.owner.totalCap-=salary;
-                            $scope.owner.paidPlayer[i].cost-=salary;
+//                            $scope.owner.totalPlayers--;                            
+//                            $scope.owner.totalCap-=salary;
+//                            $scope.owner.paidPlayer[i].cost-=salary;
                                                         
                             //need to add/remove from database
                             var reqBody={};
@@ -118,11 +166,6 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                                 success(function(data, status){
                                     console.log(data);
                                 });
-                            //player - change unavailable status and available status
-                            //owner.cutPlayer - add player id
-                            //owner.paidPlayer - remove player id
-                            //owner.totalPlayer--
-                            //owner.totalCap-=salary
                             return;
                         }
                     }
@@ -178,18 +221,21 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                         reqBody.paidPlayer.roster.push($scope.owner.paidPlayer[i].roster[l]._id);
                     }
                     console.log(reqBody);
-                    $http.put('http://localhost:3000/alterRoster/' + $scope.owner._id,reqBody);
-                    
-                    //player - change unavailable status and available status
-                    //owner.cutPlayer - add player id
-                    //owner.paidPlayer - remove player id
-                    //owner.totalPlayer--
-                    //owner.totalCap-=salary
+                    $http.put('http://localhost:3000/alterRoster/' + $scope.owner._id,reqBody);                    
                     return;
 
                 }
             }               
         };        
+        
+        /*********
+        ADMIN FUNCTIONS - DON'T USE
+        *********/
+        //UPDATE SALARY 
+        $scope.updateSalaryTest=function(ownerId){
+            $scope.totalCap=0;
+            $http.put('http://localhost:3000/ownerUpdate/' + ownerId, $scope.totalCap);
+        };              
         
 	}
 ]);

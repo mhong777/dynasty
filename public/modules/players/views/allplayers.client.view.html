@@ -1,0 +1,56 @@
+<section data-ng-controller="AllplayersController" data-ng-init="find()">
+    
+    <h3>Players</h3>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+           <tr>
+                <th>Add to<br/>Watchlist</th>
+                <th>
+                    <b>Position</b>
+                </th>
+                <th>
+                    <b>Name</b>
+                </th>
+                <th>
+                    <b>Rank</b>
+                </th>
+                <th>
+                    <b>Bye Week</b>
+                </th>
+                <th>
+                    <b>Owner</b>
+                </th>
+                <th>
+                    <b>Price</b>
+                </th>                               
+           </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="player in players | orderBy:rank">
+                <td><button type="button" class="btn btn-default">Watch</button></td>
+                <td>{{player.position}}</td>
+                <td>{{player.name}}</td>
+                <td>{{player.startRank.absRank[1]}} ({{player.position}}{{player.startRank.posRank[1]}})</td>
+                <td>{{player.byeWeek[1]}}</td>
+                <td>{{player.owner}}</td>
+                <td>{{player.price[1] | currency}}</td>                
+<!--
+                <td>{{player.endRank.absRank[0]}} ({{player.position}}{{player.endRank.posRank[0]}})</td>
+                <td>{{player.contractYear}}</td>
+-->                
+            </tr>
+        </tbody>
+    </table>      
+    
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Filters</h3>
+            <h4>Position:</h4>
+            
+        </div>
+        <div class="col-md-9">
+           
+        </div>
+    </div>
+     
+</section>

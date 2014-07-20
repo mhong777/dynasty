@@ -32,9 +32,9 @@ var getErrorMessage = function(err) {
 	return message;
 };
 
-/**
+/*******
  * Create a Owner
- */
+ ******/
 exports.create = function(req, res) {
 	var owner = new Owner(req.body);
 	owner.user = req.user;
@@ -50,16 +50,16 @@ exports.create = function(req, res) {
 	});
 };
 
-/**
+/*******
  * Show the current Owner
- */
+ *******/
 exports.read = function(req, res) {
 	res.jsonp(req.owner);
 };
 
-/**
+/********
  * Update a Owner
- */
+ ********/
 exports.update = function(req, res) {
 	var owner = req.owner ;
 
@@ -76,9 +76,9 @@ exports.update = function(req, res) {
 	});
 };
 
-/**
+/*******
  * Delete an Owner
- */
+ *******/
 exports.delete = function(req, res) {
 	var owner = req.owner ;
 
@@ -93,10 +93,11 @@ exports.delete = function(req, res) {
 	});
 };
 
-/**
+/*******
  * List of Owners
- */
-exports.list = function(req, res) { Owner.find().sort('-created').populate('user', 'displayName').exec(function(err, owners) {
+ * Populate with prices of players to calcualte total cap 
+ ******/
+exports.list = function(req, res) { Owner.find().sort('-created').populate('paidPlayer.roster', 'price').exec(function(err, owners) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -108,20 +109,9 @@ exports.list = function(req, res) { Owner.find().sort('-created').populate('user
 };
 
 
-exports.getName = function(req, res) { 
-//    var query={'name':'MichaelHong'};
-    
-    Owner.findById(req.params.ownerId).exec(function(err, owners) {
-		if (err) {
-			return res.send(400, {
-				message: getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(owners.totalCap);
-		}
-	});
-};
-
+/****
+*MAIN FUNCTION WHEN YOU CUT A PLAYER
+****/
 exports.alterRoster = function(req, res, next) { 
     //change the owner
     Owner.findById(req.params.ownerId).exec(function(err, owners) {
@@ -130,29 +120,17 @@ exports.alterRoster = function(req, res, next) {
 				message: getErrorMessage(err)
 			});
 		} else {
-            owners.totalCap=req.body.totalCap;
-            owners.totalPlayers=req.body.totalPlayers;
-            
-//            res.jsonp(owners);
-            
+                        
             //cutting a player
             for(var i=0;i<owners.paidPlayer.length;i++){                
                 if(owners.paidPlayer[i].name===req.body.positionId){                    
-                    owners.paidPlayer[i].cost=req.body.paidPlayer.cost;
                     owners.paidPlayer[i].roster=req.body.paidPlayer.roster;
                     break;
-//                    res.jsonp(owners.paidPlayer[i]);
                 }
             }                
 
             owners.cutPlayer=req.body.cutPlayer;
             owners.save();
-//            res.send(owners.name + ' ' + owners.totalCap);
-            
-//            player.salary=req.body.salary;
-//            player.save();
-//            res.send(player.name + ' ' + player.salary);
-//            
 		}
 	});
     
@@ -177,6 +155,9 @@ exports.alterRoster = function(req, res, next) {
 	});    
 };
 
+/*********
+*MAIN FUNCTION WHEN YOU PAY A PLAYER
+*********/
 exports.addCutPlayer = function(req,res){
     Owner.findById(req.body.ownerId).exec(function(err, owner) {
 		if (err) {
@@ -184,13 +165,8 @@ exports.addCutPlayer = function(req,res){
 				message: getErrorMessage(err)
 			});
 		} else {
-//            owner.cutPlayer=[];
-            owner.totalCap=owner.totalCap-28.7;
-            owner.totalPlayers--;
             owner.cutPlayer=req.body.cutPlayer;
             owner.save();
-//            res.jsonp(owner.cutPlayer);
-//            res.jsonp(owner);
         }
 	});  
     Player.findById(req.body.cutPlayer).exec(function(err, player) {
@@ -205,6 +181,45 @@ exports.addCutPlayer = function(req,res){
             res.jsonp(player);
         }
 	});         
+};
+
+/********
+ * Owner middleware
+ ********/
+exports.ownerByID = function(req, res, next, id) { Owner.findById(id).populate('paidPlayer.roster').populate('cutPlayer').exec(function(err, owner) {
+		if (err) return next(err);
+		if (! owner) return next(new Error('Failed to load Owner ' + id));
+		req.owner = owner ;
+		next();
+	});
+};
+
+/********
+ * Owner authorization middleware
+ *******/
+exports.hasAuthorization = function(req, res, next) {
+	if (req.owner.user.id !== req.user.id) {
+		return res.send(403, 'User is not authorized');
+	}
+	next();
+};
+
+/*******
+* ADMIN FUNCTIONS NOT USED
+*******/
+
+exports.getName = function(req, res) { 
+//    var query={'name':'MichaelHong'};
+    
+    Owner.findById(req.params.ownerId).exec(function(err, owners) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(owners.totalCap);
+		}
+	});
 };
 
 exports.changePlayer = function(req,res) {
@@ -269,25 +284,4 @@ exports.spotChange = function(req, res) {
 //			res.jsonp(owners);
 		}
 	});
-};
-
-/**
- * Owner middleware
- */
-exports.ownerByID = function(req, res, next, id) { Owner.findById(id).populate('paidPlayer.roster').populate('cutPlayer').exec(function(err, owner) {
-		if (err) return next(err);
-		if (! owner) return next(new Error('Failed to load Owner ' + id));
-		req.owner = owner ;
-		next();
-	});
-};
-
-/**
- * Owner authorization middleware
- */
-exports.hasAuthorization = function(req, res, next) {
-	if (req.owner.user.id !== req.user.id) {
-		return res.send(403, 'User is not authorized');
-	}
-	next();
 };

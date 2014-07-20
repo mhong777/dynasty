@@ -117,51 +117,9 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 			});
 		};
 
-        
-//{
-//    name: 'AdrianPeterson',
-//    link: 'http: //espn.go.com/nfl/player/_/id/10452/adrian-peterson',
-//    team: 'MIN',
-//    position: 'RB',
-//    byeWeek: [
-//        0,
-//        10
-//    ],
-//    startRank: {
-//        absRank: [
-//            0,
-//            1
-//        ],
-//        posRank: [
-//            0,
-//            1
-//        ]
-//    },
-//    endRank: {
-//        absRank: [
-//            3
-//        ],
-//        posRank: [
-//            0
-//        ]
-//    },
-//    contractYear: '2',
-//    price: [
-//        47.3,
-//        47.8
-//    ],
-//    available: 'false',
-//    listed: 'false',
-//    unavailable: 'true',
-//    points: [
-//        234.7
-//    ]
-//}        
         $scope.playerJson=testPlayer;  
         //Create players from JSON
         $scope.createFromJson = function(){
-            
-            
             
             angular.forEach($scope.playerJson, function(playerProfile){
                 var player = new Players({

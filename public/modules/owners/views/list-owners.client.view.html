@@ -4,7 +4,7 @@
         <h1>Owners</h1>
     </div>
 <!--        <button ng-click="addCutPlayer()" class="btn btn-default">Add it</button>-->
-
+<!--    {{owners[0].paidPlayer}}-->
     
     <div class="row">
         <table class="table table-striped table-bordered table-hover">
@@ -45,15 +45,15 @@
            <tbody>               
                 <tr ng-repeat="owner in owners | orderBy:endRank" ng-click="showRoster(owner._id)">
                     <td><h4>{{owner.name}}</h4></td>
-                    <td>{{owner.totalPlayers}}</td>
+                    <td>{{totalPlayers(owner)}}</td>
                     <td>{{owner.rank[0]}}</td>
-                    <td>{{owner.totalCap | currency}}</td>
-                    <td ng-bind="{{getNumPosition('QB', owner)}}"></td>
-                    <td ng-bind="{{getNumPosition('RB', owner)}}"></td>
-                    <td ng-bind="{{getNumPosition('WR', owner)}}"></td>
-                    <td ng-bind="{{getNumPosition('TE', owner)}}"></td>
-                    <td ng-bind="{{getNumPosition('K', owner)}}"></td>
-                    <td ng-bind="{{getNumPosition('DF', owner)}}"></td>
+                    <td>{{totalSalary(owner) | currency}}</td>
+                    <td ng-bind="{{numPosition('QB', owner)}}"></td>
+                    <td ng-bind="{{numPosition('RB', owner)}}"></td>
+                    <td ng-bind="{{numPosition('WR', owner)}}"></td>
+                    <td ng-bind="{{numPosition('TE', owner)}}"></td>
+                    <td ng-bind="{{numPosition('K', owner)}}"></td>
+                    <td ng-bind="{{numPosition('DF', owner)}}"></td>
                 </tr>           
            </tbody>
         </table>

@@ -5,6 +5,10 @@ angular.module('players').config(['$stateProvider',
 	function($stateProvider) {
 		// Players state routing
 		$stateProvider.
+		state('allplayers', {
+			url: '/allplayers',
+			templateUrl: 'modules/players/views/allplayers.client.view.html'
+		}).
 		state('listPlayers', {
 			url: '/players',
 			templateUrl: 'modules/players/views/list-players.client.view.html'
