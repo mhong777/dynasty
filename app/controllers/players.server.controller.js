@@ -59,22 +59,7 @@ exports.read = function(req, res) {
 /********
  * Update a Player
  *******/
-exports.update = function(req, res) {
-//	var player = req.player;
-//    res.jsonp(req.body.player)
-//	player = _.extend(player , req.body);
-//
-//	player.save(function(err) {
-//		if (err) {
-//			return res.send(400, {
-//				message: getErrorMessage(err)
-//			});
-//		} else {
-//			res.jsonp(player);
-//		}
-//	});
-    
-    
+exports.update = function(req, res) {    
     Player.findById(req.body.playerId).exec(function(err, player) {
 		if (err) {
 			return res.send(400, {

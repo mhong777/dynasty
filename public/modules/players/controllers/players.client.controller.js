@@ -60,6 +60,7 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
                 success(function(data, status){
                     console.log(data);
                 });
+            window.location.href='#!/players';
             return;
             
             
@@ -72,7 +73,11 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 //			});
 		};
 
-    
+        $scope.editPlayer = function(playerId){
+             window.location.href='#!/players/' + playerId + '/edit';
+            return;
+
+        }
 
 		// Find a list of Players
 		$scope.find = function() {
