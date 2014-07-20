@@ -31,9 +31,9 @@ var getErrorMessage = function(err) {
 	return message;
 };
 
-/**
+/********
  * Create a Player
- */
+ *******/
 exports.create = function(req, res) {
 	var player = new Player(req.body);
 	player.user = req.user;
@@ -49,35 +49,55 @@ exports.create = function(req, res) {
 	});
 };
 
-/**
+/*********
  * Show the current Player
- */
+ ********/
 exports.read = function(req, res) {
 	res.jsonp(req.player);
 };
 
-/**
+/********
  * Update a Player
- */
+ *******/
 exports.update = function(req, res) {
-	var player = req.player ;
-
-	player = _.extend(player , req.body);
-
-	player.save(function(err) {
+//	var player = req.player;
+//    res.jsonp(req.body.player)
+//	player = _.extend(player , req.body);
+//
+//	player.save(function(err) {
+//		if (err) {
+//			return res.send(400, {
+//				message: getErrorMessage(err)
+//			});
+//		} else {
+//			res.jsonp(player);
+//		}
+//	});
+    
+    
+    Player.findById(req.body.playerId).exec(function(err, player) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(player);
-		}
-	});
+		} else {        
+            player.team=req.body.team;
+            player.byeWeek=req.body.byeWeek;
+            player.price[1]=req.body.price;
+            player.available=req.body.available;
+            player.unavailable=req.body.unavailable;
+            player.owner=req.body.owner;
+            player.contractYear=req.body.contractYear;
+            player.save();
+            res.jsonp(player);
+        }
+	});  
+    
 };
 
-/**
+/*******
  * Delete an Player
- */
+ ******/
 exports.delete = function(req, res) {
 	var player = req.player ;
 
@@ -92,10 +112,10 @@ exports.delete = function(req, res) {
 	});
 };
 
-/**
+/*******
  * List of Players
- */
-exports.list = function(req, res) { Player.find().sort('-created').populate('user', 'displayName').exec(function(err, players) {
+ ******/
+exports.list = function(req, res) { Player.find().sort('-created').populate('owner', 'name').exec(function(err, players) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -106,9 +126,9 @@ exports.list = function(req, res) { Player.find().sort('-created').populate('use
 	});
 };
 
-/**
+/*********
  * Player middleware
- */
+ *******/
 exports.playerByID = function(req, res, next, id) { Player.findById(id).populate('owner', 'name').exec(function(err, player) {
 		if (err) return next(err);
 		if (! player) return next(new Error('Failed to load Player ' + id));
@@ -117,9 +137,9 @@ exports.playerByID = function(req, res, next, id) { Player.findById(id).populate
 	});
 };
 
-/**
+/*******
  * Player authorization middleware
- */
+ ******/
 exports.hasAuthorization = function(req, res, next) {
 	if (req.player.user.id !== req.user.id) {
 		return res.send(403, 'User is not authorized');
