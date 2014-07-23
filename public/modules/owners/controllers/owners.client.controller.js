@@ -23,45 +23,48 @@ angular.module('owners').controller('OwnersController', ['$scope', '$stateParams
         /************
         METRICS
         *************/
-        //get the total number of players
-        $scope.totalPlayers = function(owner){
-            var totPlayer=0;
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                totPlayer+=owner.paidPlayer[i].roster.length;
-            }
-            return totPlayer
-        };
-        
-        //get the total salary of an owner
-        $scope.totalSalary = function(owner){
-//            console.log(owner);
-            var totSalary=0;
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                for(var y=0; y<owner.paidPlayer[i].roster.length;y++){
-                    totSalary+=owner.paidPlayer[i].roster[y].price[1];    
-                }                
-            }
-            return totSalary;
-        };
-        
-        //get number of players in a given position
-        $scope.numPosition = function(position, owner){
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                if(owner.paidPlayer[i].name===position){                    
-                    return owner.paidPlayer[i].roster.length;
-                }   
-            }
-        };
-        
-        //get the cost of a given position
-        $scope.salaryPosition = function(){
-            
-        };
-                
-        //get the end rank of the selected owner - for sorting
-        $scope.endRank=function(selectedOwner){
-          return selectedOwner.rank[0];  
-        };
+        $scope.init=function(){
+            //get the total number of players
+            $scope.totalPlayers = function(owner){
+                var totPlayer=0;
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    totPlayer+=owner.paidPlayer[i].roster.length;
+                }
+                return totPlayer
+            };
+
+            //get the total salary of an owner
+            $scope.totalSalary = function(owner){
+    //            console.log(owner);
+                var totSalary=0;
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    for(var y=0; y<owner.paidPlayer[i].roster.length;y++){
+                        totSalary+=owner.paidPlayer[i].roster[y].price[1];    
+                    }                
+                }
+                return totSalary;
+            };
+
+            //get number of players in a given position
+            $scope.numPosition = function(position, owner){
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    if(owner.paidPlayer[i].name===position){                    
+                        return owner.paidPlayer[i].roster.length;
+                    }   
+                }
+            };
+
+            //get the cost of a given position
+            $scope.salaryPosition = function(){
+
+            };
+
+            //get the end rank of the selected owner - for sorting
+            $scope.endRank=function(selectedOwner){
+              return selectedOwner.rank[0];  
+            };            
+        }
+
         
         
         $scope.showRoster=function(ownerId){
@@ -86,9 +89,15 @@ angular.module('owners').controller('OwnersController', ['$scope', '$stateParams
         INITIALIZATION FOR MAIN PAGE
         ******/
 		// Find a list of Owners
-		$scope.find = function() {
-			$scope.owners = Owners.query();
-		};
+        $http.get('http://localhost:3000/owners/').
+            success(function(data, status){
+                $scope.owners=data;
+                $scope.init();         
+            });            
+        
+//		$scope.find = function() {
+//			$scope.owners = Owners.query();
+//		};
         
         /*******
         INITIALIZATION FOR ROSTER REVIEW PAGE

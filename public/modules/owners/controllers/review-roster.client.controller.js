@@ -4,80 +4,93 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
 	function($scope, $stateParams, $location, Authentication, Owners, $http ) {
 		$scope.authentication = Authentication;
 		// Review roster controller logic
-
-        /************
-        METRICS
-        *************/
-        //get the total number of players
-        $scope.totalPlayers = function(owner){
-            var totPlayer=0;
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                totPlayer+=owner.paidPlayer[i].roster.length;
-            }
-            return totPlayer
-        };
-        
-        //get the total salary of an owner
-        $scope.totalSalary = function(owner){
-            var totSalary=0;
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                for(var y=0; y<owner.paidPlayer[i].roster.length;y++){
-                    totSalary+=owner.paidPlayer[i].roster[y].price[1];    
-                }                
-            }
-            return totSalary;
-        };
-        
-        //get number of players in a given position
-        $scope.numPosition = function(position, owner){
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                if(owner.paidPlayer[i].name===position){                    
-                    return owner.paidPlayer[i].roster.length;
-                }   
-            }
-        };
-        
-        //get the cost of a given position
-        $scope.salaryPosition = function(position, owner){
-            var posSalary=0;
-            for(var i=0; i<owner.paidPlayer.length;i++){
-                if(owner.paidPlayer[i].name===position){     
-                    for(var y=0;y<owner.paidPlayer[i].roster.length;y++){
-                        posSalary+=owner.paidPlayer[i].roster[y].price[1];    
-                    }
-                    return posSalary;
-                }   
-            }            
-        };
-        
-        //define salary cap
-        $scope.salaryCap=300;
-        $scope.availableCap=function(){
-            if($scope.owner.totalCap>$scope.salaryCap){
-                return 'overCap';
-            }  
-            else{
-                return 'underCap';
-            }
-        };
-        
         /********
         INITIALIZATION FUNCTIONS
         ********/
 		// Find existing Owner
 		$scope.findOne = function() {
-			$scope.owner = Owners.get({ 
-				ownerId: $stateParams.ownerId
-			});
+//			$scope.owner = Owners.get({ 
+//				ownerId: $stateParams.ownerId
+//			});
+            $http.get('http://localhost:3000/owners/' + $stateParams.ownerId).
+                success(function(data, status){
+                    $scope.owner=data;
+                    $scope.init();         
+                });            
 		};
         
-        //FUNCTION FOR CHECKING USER
-        $scope.checkUser=function(){
-            if($scope.authentication.user._id===$scope.owner.userIndex){
-                return true;
-            }
-            else{return false;}
+        /************
+        METRICS
+        *************/
+        $scope.init=function(){
+            //get the total number of players
+            $scope.totalPlayers = function(owner){
+                var totPlayer=0;
+                console.log('attempt');
+                console.log(owner)
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    totPlayer+=owner.paidPlayer[i].roster.length;
+                }
+                console.log(totPlayer);
+                return totPlayer;
+            };
+
+            //get the total salary of an owner
+            $scope.totalSalary = function(owner){
+                var totSalary=0;
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    for(var y=0; y<owner.paidPlayer[i].roster.length;y++){
+                        totSalary+=owner.paidPlayer[i].roster[y].price[1];    
+                    }                
+                }
+                return totSalary;
+            };
+
+            //get number of players in a given position
+            $scope.numPosition = function(position, owner){
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    if(owner.paidPlayer[i].name===position){                    
+                        return owner.paidPlayer[i].roster.length;
+                    }   
+                }
+            };
+
+            //get the cost of a given position
+            $scope.salaryPosition = function(position, owner){
+                var posSalary=0;
+                for(var i=0; i<owner.paidPlayer.length;i++){
+                    if(owner.paidPlayer[i].name===position){     
+                        for(var y=0;y<owner.paidPlayer[i].roster.length;y++){
+                            posSalary+=owner.paidPlayer[i].roster[y].price[1];    
+                        }
+                        return posSalary;
+                    }   
+                }            
+            };
+
+            //define salary cap
+            $scope.salaryCap=300;
+            $scope.availableCap=function(){
+                if($scope.owner.totalCap>$scope.salaryCap){
+                    return 'overCap';
+                }  
+                else{
+                    return 'underCap';
+                }
+            };
+            //FUNCTION FOR CHECKING USER
+            $scope.checkUser=function(){
+                if($scope.authentication.user._id===$scope.owner.userIndex){
+                    return true;
+                }
+                else{return false;}
+            };            
         };
+
+        
+
+        
+
         
         /*******
         FOR SORTING
@@ -236,6 +249,5 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             $scope.totalCap=0;
             $http.put('http://localhost:3000/ownerUpdate/' + ownerId, $scope.totalCap);
         };              
-        
-	}
+	}                                                    
 ]);
