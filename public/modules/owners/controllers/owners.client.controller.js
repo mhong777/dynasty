@@ -34,6 +34,7 @@ angular.module('owners').controller('OwnersController', ['$scope', '$stateParams
         
         //get the total salary of an owner
         $scope.totalSalary = function(owner){
+            console.log(owner);
             var totSalary=0;
             for(var i=0; i<owner.paidPlayer.length;i++){
                 for(var y=0; y<owner.paidPlayer[i].roster.length;y++){

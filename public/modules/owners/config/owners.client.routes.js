@@ -5,6 +5,10 @@ angular.module('owners').config(['$stateProvider',
 	function($stateProvider) {
 		// Owners state routing
 		$stateProvider.
+		state('trade', {
+			url: '/trade',
+			templateUrl: 'modules/owners/views/trade.client.view.html'
+		}).
 		state('review-roster', {
 			url: '/review-roster/:ownerId',
 			templateUrl: 'modules/owners/views/review-roster.client.view.html'

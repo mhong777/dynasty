@@ -42,8 +42,12 @@ angular.module('players').controller('AllplayersController', ['$scope', '$stateP
         /*******
         *FOR FILTERS
         *******/
-        
+        $scope.filters={};
+        $scope.filters.position=[];
         //filter by position
+        $scope.addFilter=function(position){
+            $scope.filters.position.push(position);  
+        };
         
         //filter by availability
         
