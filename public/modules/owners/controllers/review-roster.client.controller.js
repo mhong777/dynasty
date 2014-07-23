@@ -26,8 +26,8 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             //get the total number of players
             $scope.totalPlayers = function(owner){
                 var totPlayer=0;
-                console.log('attempt');
-                console.log(owner)
+//                console.log('attempt');
+//                console.log(owner)
                 for(var i=0; i<owner.paidPlayer.length;i++){
                     totPlayer+=owner.paidPlayer[i].roster.length;
                 }
@@ -175,7 +175,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                             }
                             
                             console.log(reqBody);
-                            $http.put('http://localhost:3000/alterRoster/' + $scope.owner._id,reqBody).
+                            $http.put('/alterRoster/' + $scope.owner._id,reqBody).
                                 success(function(data, status){
                                     console.log(data);
                                 });
@@ -234,7 +234,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                         reqBody.paidPlayer.roster.push($scope.owner.paidPlayer[i].roster[l]._id);
                     }
                     console.log(reqBody);
-                    $http.put('http://localhost:3000/alterRoster/' + $scope.owner._id,reqBody);                    
+                    $http.put('/alterRoster/' + $scope.owner._id,reqBody);                    
                     return;
 
                 }
@@ -247,7 +247,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
         //UPDATE SALARY 
         $scope.updateSalaryTest=function(ownerId){
             $scope.totalCap=0;
-            $http.put('http://localhost:3000/ownerUpdate/' + ownerId, $scope.totalCap);
+            $http.put('/ownerUpdate/' + ownerId, $scope.totalCap);
         };              
 	}                                                    
 ]);
