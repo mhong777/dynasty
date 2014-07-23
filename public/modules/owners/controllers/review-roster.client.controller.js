@@ -12,7 +12,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
 //			$scope.owner = Owners.get({ 
 //				ownerId: $stateParams.ownerId
 //			});
-            $http.get('http://localhost:3000/owners/' + $stateParams.ownerId).
+            $http.get('/owners/' + $stateParams.ownerId).
                 success(function(data, status){
                     $scope.owner=data;
                     $scope.init();         

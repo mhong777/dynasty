@@ -89,7 +89,7 @@ angular.module('owners').controller('OwnersController', ['$scope', '$stateParams
         INITIALIZATION FOR MAIN PAGE
         ******/
 		// Find a list of Owners
-        $http.get('http://localhost:3000/owners/').
+        $http.get('/owners').
             success(function(data, status){
                 $scope.owners=data;
                 $scope.init();         
