@@ -56,7 +56,7 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
             req.owner=$scope.player.owner;
             req.contractYear=$scope.player.contractYear;
 
-            $http.put('http://localhost:3000/playerUpdate',req).
+            $http.put('/playerUpdate',req).
                 success(function(data, status){
                     console.log(data);
                 });

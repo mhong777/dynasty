@@ -97,7 +97,7 @@ exports.delete = function(req, res) {
  * List of Owners
  * Populate with prices of players to calcualte total cap 
  ******/
-exports.list = function(req, res) { Owner.find().sort('-created').populate('paidPlayer.roster', 'price').exec(function(err, owners) {
+exports.list = function(req, res) { Owner.find().sort('-created').populate('paidPlayer.roster', 'price name').exec(function(err, owners) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
