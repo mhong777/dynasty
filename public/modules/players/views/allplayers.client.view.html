@@ -1,6 +1,40 @@
 <section data-ng-controller="AllplayersController" data-ng-init="find()">
     
-    <h3>Players</h3>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Players</h3>        
+        </div>
+        <div class="col-md-5">
+            <h4>Filters</h4>
+                <div class="dropdown dropfilter">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                    Position: {{filters.position}}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation" ng-click="filters.position = ''"><a dropdown-toggle>All</a></li>
+                    <li role="presentation" ng-click="filters.position = 'QB'"><a dropdown-toggle>QB</a></li>
+                    <li role="presentation" ng-click="filters.position = 'WR'"><a dropdown-toggle>WR</a></li>
+                    <li role="presentation" ng-click="filters.position = 'RB'"><a dropdown-toggle>RB</a></li>
+                    <li role="presentation" ng-click="filters.position = 'TE'"><a dropdown-toggle>TE</a></li>
+                    <li role="presentation" ng-click="filters.position = 'K'"><a dropdown-toggle>K</a></li>
+                    <li role="presentation" ng-click="filters.position = 'DF'"><a dropdown-toggle>DF</a></li>
+                  </ul>
+                </div>                        
+                <div class="dropdown dropfilter">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
+                    Availability: {{availableString}}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation" ng-click="changeAvailable(1)"><a dropdown-toggle>All</a></li>
+                    <li role="presentation" ng-click="changeAvailable(2)"><a dropdown-toggle>Available</a></li>
+                    <li role="presentation" ng-click="changeAvailable(3)"><a dropdown-toggle>Unavailable</a></li>
+                  </ul>
+                </div>                                                       
+        </div>
+    </div>    
+    
     <table class="table table-striped table-bordered table-hover">
         <thead>
            <tr>
@@ -18,7 +52,7 @@
                     <b>Bye Week</b>
                 </th>
                 <th>
-                    <b>Owner</b>
+                    <b>2013 Owner</b>
                 </th>
                 <th>
                     <b>Price</b>
@@ -26,13 +60,13 @@
            </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="player in players | orderBy:rank | filter: filters">
+            <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)">
                 <td><button type="button" class="btn btn-default">Watch</button></td>
                 <td>{{player.position}}</td>
                 <td>{{player.name}}</td>
                 <td>{{player.startRank.absRank[1]}} ({{player.position}}{{player.startRank.posRank[1]}})</td>
                 <td>{{player.byeWeek[1]}}</td>
-                <td>{{player.owner}}</td>
+                <td>{{player.owner.name}}</td>
                 <td>{{player.price[1] | currency}}</td>                
 <!--
                 <td>{{player.endRank.absRank[0]}} ({{player.position}}{{player.endRank.posRank[0]}})</td>
@@ -40,17 +74,6 @@
 -->                
             </tr>
         </tbody>
-    </table>      
-    
-    <div class="row">
-        <div class="col-md-3">
-            <h3>Filters</h3>
-            <h4>Position:</h4>
-            
-        </div>
-        <div class="col-md-9">
-           
-        </div>
-    </div>
+    </table>          
      
 </section>

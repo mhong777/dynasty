@@ -9,6 +9,12 @@ angular.module('players').controller('AllplayersController', ['$scope', '$stateP
         // Find a list of Players
 		$scope.find = function() {
 			$scope.players = Players.query();
+            $scope.filters={};
+            $scope.filters.position='';
+            $scope.availableString='All Players';
+            $scope.filters.available='';
+            $scope.availableString='';        
+            
 		};
         
         /*******
@@ -42,12 +48,39 @@ angular.module('players').controller('AllplayersController', ['$scope', '$stateP
         /*******
         *FOR FILTERS
         *******/
-        $scope.filters={};
-        $scope.filters.position=[];
+        $scope.changeAvailable=function(value){
+            if(value===1){
+                $scope.filters.available='';
+                $scope.availableString='All Players';
+                return;
+            }  
+            else if(value ===2){
+                $scope.filters.available=true;
+                $scope.availableString='Free Agents';
+                return;                
+            }
+            else{
+                $scope.filters.available=false;
+                $scope.availableString='Currently Owned';
+                return;                
+            }
+        };
+        
         //filter by position
         $scope.addFilter=function(position){
             $scope.filters.position.push(position);  
         };
+
+        $scope.listFilter = function (position, available) {
+            return function (list) {
+//                console.log(list.available);
+//                console.log(available);
+                if(list.available===available || available===''){
+                    return list.position.match(position);                     
+                }
+//                    && list.available.match(available);
+            };
+        };        
         
         //filter by availability
         
