@@ -17,6 +17,9 @@ module.exports = function(app) {
     app.route('/playerUpdate')
         .put(players.update);
     
+    app.route('/updatePlayerOwner')
+        .put(players.updatePlayerOwner);
+    
 	// Finish by binding the Player middleware
 	app.param('playerId', players.playerByID);
 };

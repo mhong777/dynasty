@@ -80,6 +80,23 @@ exports.update = function(req, res) {
     
 };
 
+/*********
+* Update the Owner of the Player
+**********/
+exports.updatePlayerOwner=function(req,res){
+    Player.findById(req.body.playerId).exec(function(err, player) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {        
+            player.owner=req.body.owner;
+            player.save();
+            res.jsonp(player);
+        }
+	});     
+};
+
 /*******
  * Delete an Player
  ******/
