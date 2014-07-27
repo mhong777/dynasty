@@ -43,7 +43,7 @@ angular.module('players').controller('AllplayersController', ['$scope', '$stateP
         
         $scope.rank=function(player){
             return player.startRank.absRank[1];
-        }
+        };
         
         /*******
         *FOR FILTERS

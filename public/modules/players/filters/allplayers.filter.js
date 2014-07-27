@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('myFilters', []).
 filter('byselection', function () {
     return function (players, selection) {
@@ -10,6 +12,6 @@ filter('byselection', function () {
 //                this.out.push(value);
 //            }
 //        }, items);
-        return items.out;
+        //return items.out;
     };
 });

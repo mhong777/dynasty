@@ -11,3 +11,8 @@ angular.module('owners').factory('Owners', ['$resource',
 		});
 	}
 ]);
+
+angular.module('owners').factory('socket', function(){
+    var socket=io.connect('/');
+    return socket;
+});

@@ -13,6 +13,9 @@ module.exports = function(app) {
 		.get(owners.read)
 		.put(users.requiresLogin, owners.hasAuthorization, owners.update)
 		.delete(users.requiresLogin, owners.hasAuthorization, owners.delete);
+    
+    app.route('/ownerUpdate')
+        .put(owners.update);
 
     app.route('/alterRoster/:ownerId')
         .put(owners.alterRoster);

@@ -60,20 +60,19 @@ exports.read = function(req, res) {
 /********
  * Update a Owner
  ********/
-exports.update = function(req, res) {
-	var owner = req.owner ;
-
-	owner = _.extend(owner , req.body);
-
-	owner.save(function(err) {
+exports.update = function(req, res) {    
+    Owner.findById(req.body.ownerId).exec(function(err, owner) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(owner);
-		}
-	});
+		} else {        
+            owner.draftPicks=req.body.draftPicks;
+            owner.additionalCap=req.body.additionalCap;
+            owner.save();
+            res.jsonp(owner);
+        }
+	});  
 };
 
 /*******

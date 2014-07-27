@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var express = require('express'),
+    http = require('http'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
@@ -22,7 +23,9 @@ var express = require('express'),
 
 module.exports = function(db) {
 	// Initialize express app
-	var app = express();
+	var app = express();        
+    var server = http.createServer(app);    
+    var io = require('socket.io').listen(server);
 
 	// Globbing model files
 	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
@@ -150,5 +153,14 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-	return app;
+    
+    io.on('connection', function(socket){
+        socket.broadcast.emit('user connected');
+        
+         socket.on('send msg', function(msg){
+            console.log(msg); 
+         });
+    });
+    
+	return server;
 };

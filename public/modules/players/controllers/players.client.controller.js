@@ -126,23 +126,7 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
                         break;
                     }                    
                 }
-            }
-            
-            
-//            var req={};
-//            req.playerId=$scope.player._id;
-//            req.team=$scope.player.team;
-//            req.byeWeek=$scope.player.byeWeek;
-//            req.price=$scope.player.price[1];
-//            req.available=$scope.player.available;
-//            req.unavailable=$scope.player.unavailable;
-//            req.owner=$scope.player.owner;
-//            req.contractYear=$scope.player.contractYear;
-//
-//            $http.put('/playerUpdate',req).
-//                success(function(data, status){
-//                    console.log(data);
-//                });
+            }            
             return;
 		};        
         
@@ -150,7 +134,7 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
              window.location.href='#!/players/' + playerId + '/edit';
             return;
 
-        }
+        };
 
 		// Find a list of Players
 		$scope.find = function() {
@@ -193,7 +177,7 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 
                 
                 player.$save(function(response) {
-                    console.log(player.name + ',' + response._id)
+                    console.log(player.name + ',' + response._id);
                     //$location.path('players/' + response._id);
                 }, function(errorResponse) {
                     $scope.error = errorResponse.data.message;

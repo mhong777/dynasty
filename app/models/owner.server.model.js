@@ -47,6 +47,13 @@ var OwnerSchema = new Schema({
           roster:[{type:Schema.ObjectId, ref:'Player'}]
       }]  
     },
+    additionalCap:{
+        type:Number,
+        default:0
+    },
+    draftPicks:{
+        type:[Number]
+    },
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'

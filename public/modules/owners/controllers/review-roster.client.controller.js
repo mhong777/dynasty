@@ -43,6 +43,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                         totSalary+=owner.paidPlayer[i].roster[y].price[1];    
                     }                
                 }
+                totSalary+=owner.additionalCap;
                 return totSalary;
             };
 

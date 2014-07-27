@@ -23,6 +23,9 @@
                         <h4>Salary</h4>
                     </th>
                     <th>
+                        <h4>Draft<br/>Picks</h4>
+                    </th>
+                    <th>
                         <h4>QB</h4>
                     </th>
                     <th>
@@ -48,6 +51,7 @@
                     <td>{{totalPlayers(owner)}}</td>
                     <td>{{owner.rank[0]}}</td>
                     <td>{{totalSalary(owner) | currency}}</td>
+                    <td>{{owner.draftPicks}}</td>
                     <td ng-bind="{{numPosition('QB', owner)}}"></td>
                     <td ng-bind="{{numPosition('RB', owner)}}"></td>
                     <td ng-bind="{{numPosition('WR', owner)}}"></td>

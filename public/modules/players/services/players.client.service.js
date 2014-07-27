@@ -11,3 +11,8 @@ angular.module('players').factory('Players', ['$resource',
 		});
 	}
 ]);
+
+angular.module('players').factory('socket', function(){
+    var socket=io.connect('/');
+    return socket;
+});
