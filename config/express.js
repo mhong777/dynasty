@@ -162,5 +162,5 @@ app.use(function (req, res, next) {
 //         });
 //    });
     
-	return app;
+	return server;
 };
