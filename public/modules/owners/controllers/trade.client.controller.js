@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('owners').controller('TradeController', ['$scope', '$stateParams', '$location', 'Authentication', 'Owners', '$http', 'socket',
-	function($scope, $stateParams, $location, Authentication, Owners, $http, socket ) {
+angular.module('owners').controller('TradeController', ['$scope', '$stateParams', '$location', 'Authentication', 'Owners', '$http',
+	function($scope, $stateParams, $location, Authentication, Owners, $http ) {
 		$scope.authentication = Authentication;
 
         /******
@@ -151,6 +151,7 @@ angular.module('owners').controller('TradeController', ['$scope', '$stateParams'
                 $scope.tradePlayer1=[];
                 for(var x=0;x<owner.paidPlayer.length;x++){
                     for(var y=0;y<owner.paidPlayer[x].roster.length;y++){
+                        owner.paidPlayer[x].roster[y].position=owner.paidPlayer[x].name;
                         owner.paidPlayer[x].roster[y].tradeStatus=false;
                     }
                 }
@@ -168,6 +169,7 @@ angular.module('owners').controller('TradeController', ['$scope', '$stateParams'
                 $scope.tradePlayer2=[];
                 for(var x=0;x<owner.paidPlayer.length;x++){
                     for(var y=0;y<owner.paidPlayer[x].roster.length;y++){
+                        owner.paidPlayer[x].roster[y].position=owner.paidPlayer[x].name;
                         owner.paidPlayer[x].roster[y].tradeStatus=false;
                     }
                 }
@@ -192,7 +194,7 @@ angular.module('owners').controller('TradeController', ['$scope', '$stateParams'
                  }
              }
              else{
-                 $scope.tradeDraft1.push(draft);                                  
+                 $scope.tradeDraft1.push(draft);         
              }            
         };
 
@@ -214,14 +216,108 @@ angular.module('owners').controller('TradeController', ['$scope', '$stateParams'
         ********/
         $scope.tradePlayers=function(){
             var req={};
+            
+            //build new draft arrays
+            for(var x=0;x<$scope.tradeDraft1.length;x++){
+                //remove from first player
+                 for(var y=0;y<$scope.owner1.draftPicks.length;y++){
+                     if($scope.tradeDraft1[x].pick===$scope.owner1.draftPicks[y]){
+                         $scope.owner1.draftPicks.splice(y,1);
+                         $scope.owner1.tradePicks[y].status=false;
+                         $scope.owner2.tradePicks.push($scope.owner1.tradePicks[y]);
+                         $scope.owner1.tradePicks.splice(y,1);
+                     }
+                 }                
+                //add to second player
+                $scope.owner2.draftPicks.push($scope.tradeDraft1[x].pick);
+            }
+            for(x=0;x<$scope.tradeDraft2.length;x++){
+                //remove from first player
+                 for(y=0;y<$scope.owner2.draftPicks.length;y++){
+                     if($scope.tradeDraft2[x].pick===$scope.owner2.draftPicks[y]){
+                         $scope.owner2.draftPicks.splice(y,1);
+                         $scope.owner2.tradePicks[y].status=false;
+                         $scope.owner1.tradePicks.push($scope.owner2.tradePicks[y]);
+                         $scope.owner2.tradePicks.splice(y,1);
+                     }
+                 }                
+                //add to second player
+                $scope.owner1.draftPicks.push($scope.tradeDraft2[x].pick);
+            }
+            
+            
+            req.owner1Id=$scope.owner1._id;
+            req.owner2Id=$scope.owner2._id;
             req.tradePlayer1=$scope.tradePlayer1;
             req.tradePlayer2=$scope.tradePlayer2;
-            req.tradeDraft1=$scope.tradeDraft1;
-            req.tradeDraft2=$scope.tradeDraft2;
+            req.tradeDraft1=$scope.owner1.draftPicks;
+            req.tradeDraft2=$scope.owner2.draftPicks;
             req.owner1Cap=$scope.owner1Cap;
-            req.owner2Cap=$scope.owner2Cap;
-            console.log(req);
+            req.owner2Cap=$scope.owner2Cap;                        
             
+            //after the success
+            //move the players
+            
+            //for player 1
+            for(var i=0;i<$scope.tradePlayer1.length;i++){
+                $scope.tradePlayer1[i].tradeStatus=false;
+                //add to second player
+                for(var l=0;l<$scope.owner2.paidPlayer.length;l++){
+                    if($scope.owner2.paidPlayer[l].name===$scope.tradePlayer1[i].position){
+                        $scope.owner2.paidPlayer[l].roster.push($scope.tradePlayer1[i]);
+                    }
+                }
+                
+                //remove from first player
+                for(var j=0;j<$scope.owner1.paidPlayer.length;j++){
+                    if($scope.tradePlayer1[i].position===$scope.owner1.paidPlayer[j].name){
+                        for(var k=0;k<$scope.owner1.paidPlayer[j].roster.length;k++){
+                            if($scope.owner1.paidPlayer[j].roster[k]._id===$scope.tradePlayer1[i]._id){
+                                $scope.owner1.paidPlayer[j].roster.splice(k,1);
+                            }
+                        }
+                    }
+                }                
+            }
+            
+//            //for player 2
+            for(i=0;i<$scope.tradePlayer2.length;i++){
+                $scope.tradePlayer2[i].tradeStatus=false;
+                //add to second player
+                for(l=0;l<$scope.owner1.paidPlayer.length;l++){
+                    if($scope.owner1.paidPlayer[l].name===$scope.tradePlayer2[i].position){
+                        $scope.owner1.paidPlayer[l].roster.push($scope.tradePlayer2[i]);
+                    }
+                }
+                
+                //remove from first player
+                for(j=0;j<$scope.owner2.paidPlayer.length;j++){
+                    if($scope.tradePlayer2[i].position===$scope.owner2.paidPlayer[j].name){
+                        for(k=0;k<$scope.owner2.paidPlayer[j].roster.length;k++){
+                            if($scope.owner2.paidPlayer[j].roster[k]._id===$scope.tradePlayer2[i]._id){
+                                $scope.owner2.paidPlayer[j].roster.splice(k,1);
+                            }
+                        }
+                    }
+                }                
+            }            
+
+            
+            
+//            console.log(req);
+            $scope.tradePlayer1=[];
+            $scope.tradePlayer2=[];
+            $scope.tradeDraft1=[];
+            $scope.tradeDraft2=[];
+            $scope.owner1Cap=0;
+            $scope.owner2Cap=0;            
+            
+            $http.put('/executeTrade',req).
+                success(function(data, status){
+                    console.log(data);
+                });            
+            
+            //remake the tradePicks
 
 //            $scope.tradePlayer1=[];
 //            $scope.tradePlayer2=[];
@@ -240,11 +336,5 @@ angular.module('owners').controller('TradeController', ['$scope', '$stateParams'
         };
         
         
-        /*****
-        SOCKET TEST
-        ****/
-        $scope.sendMsg=function(){
-            socket.emit('send msg', 'works');
-        };
 	}
 ]);

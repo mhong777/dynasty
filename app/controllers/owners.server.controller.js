@@ -193,6 +193,58 @@ exports.ownerByID = function(req, res, next, id) { Owner.findById(id).populate('
 	});
 };
 
+/******
+* Execute the trade
+*****/
+exports.executeTrade=function(req,res){
+    //go owner by owners
+    //change draft picks
+    //change cap
+    //change players
+    Owner.findById(req.body.owner1Id).exec(function(err, owner1) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+            owner1.additionalCap-=req.body.owner1Cap;
+            owner1.additionalCap+=req.body.owner2Cap;
+            owner1.draftPicks=req.body.tradeDraft1;
+            
+            owner1.save();
+        }
+	});  
+
+    Owner.findById(req.body.owner2Id).exec(function(err, owner2) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+            owner2.additionalCap-=req.body.owner2Cap;
+            owner2.additionalCap+=req.body.owner1Cap;
+            owner2.draftPicks=req.body.tradeDraft2;
+            
+            owner2.save();
+        }
+	});      
+    
+    res.send(req.body);
+    
+//            req.owner1Id=$scope.owner1._id;
+//            req.owner2Id=$scope.owner2._id;
+//            req.tradePlayer1=$scope.tradePlayer1;
+//            req.tradePlayer2=$scope.tradePlayer2;
+//            req.tradeDraft1=$scope.owner1.draftPicks;
+//            req.tradeDraft2=$scope.owner2.draftPicks;
+//            req.owner1Cap=$scope.owner1Cap;
+//            req.owner2Cap=$scope.owner2Cap;                        
+    
+    //change the owners
+    
+    //change the player
+};
+
 /********
  * Owner authorization middleware
  *******/

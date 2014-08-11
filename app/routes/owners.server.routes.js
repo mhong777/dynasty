@@ -32,6 +32,9 @@ module.exports = function(app) {
     app.route('/addCutPlayer')
         .put(owners.addCutPlayer);
     
+    app.route('/executeTrade')
+        .put(owners.executeTrade);
+    
 	// Finish by binding the Owner middleware
 	app.param('ownerId', owners.ownerByID);
 };

@@ -48,7 +48,7 @@
                         <tr ng-repeat="paidPlayer in positionType.roster">
                             <td><input type="checkbox" ng-model="paidPlayer.tradeStatus" ng-Click="addTradePlayer1(paidPlayer)"></td>                            
                             <td>{{paidPlayer.name}}</td>
-                            <td>{{paidPlayer.price[1] | currency}} {{paidPlayer.tradeStatus}}</td>               
+                            <td>{{paidPlayer.price[1] | currency}}</td>               
                         </tr>
                     </tbody>
                 </table>                    

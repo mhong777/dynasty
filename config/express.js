@@ -154,13 +154,13 @@ app.use(function (req, res, next) {
     next();
 });
     
-//    io.on('connection', function(socket){
-//        socket.broadcast.emit('user connected');
-//        
-//         socket.on('send msg', function(msg){
-//            console.log(msg); 
-//         });
-//    });
+    io.on('connection', function(socket){
+        socket.broadcast.emit('user connected');
+        
+         socket.on('send msg', function(msg){
+            console.log(msg); 
+         });
+    });
     
 	return server;
 };
