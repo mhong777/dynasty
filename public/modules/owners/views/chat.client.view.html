@@ -1,4 +1,11 @@
 <section data-ng-controller="ChatController">
 	This is the Chat
-	<button class="btn btn-default" ng-Click="sendMsg()">Test Chat</button>
+	
+	<div class="chatRm">
+        {{msgs}}
+	    <ul ng-repeat="msg in msgs">
+	           <li>{{msg.user}}: {{msg.msg}}</li>
+	    </ul>
+	    <input ng-model="newMsg" /><button class="btn btn-default" ng-Click="sendMsg()">Test Chat</button>
+	</div>
 </section>

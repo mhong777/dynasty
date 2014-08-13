@@ -2,7 +2,7 @@
 // Owners controller
 angular.module('owners').controller('OwnersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Owners', '$modal', '$http',
 	function($scope, $stateParams, $location, Authentication, Owners, $modal, $http ) {
-		$scope.authentication = Authentication;        
+    $scope.authentication = Authentication;
         
         /************
         METRICS
