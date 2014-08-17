@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
 	_ = require('lodash');
 
+
 /**
  * Get the error message from error object
  */
@@ -31,6 +32,9 @@ var getErrorMessage = function(err) {
 
 	return message;
 };
+
+
+
 
 /*******
  * Create a Owner

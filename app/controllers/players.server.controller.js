@@ -59,7 +59,8 @@ exports.read = function(req, res) {
 /********
  * Update a Player
  *******/
-exports.update = function(req, res) {    
+exports.update = function(req, res) {
+    
     Player.findById(req.body.playerId).exec(function(err, player) {
 		if (err) {
 			return res.send(400, {
@@ -71,8 +72,9 @@ exports.update = function(req, res) {
             player.price[1]=req.body.price;
             player.available=req.body.available;
             player.unavailable=req.body.unavailable;
-            player.owner=req.body.owner;
+            player.owner=req.body.owner._id;
             player.contractYear=req.body.contractYear;
+            player.rookie=req.body.rookie;
             player.save();
             res.jsonp(player);
         }

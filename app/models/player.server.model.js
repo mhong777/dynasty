@@ -20,6 +20,10 @@ var PlayerSchema = new Schema({
         type: [Number],
         default:0
     },
+    rookie:{
+        type: Boolean,
+        default:false
+    },    
     available:{
         type: Boolean,
         default:true

@@ -5,6 +5,10 @@ angular.module('owners').config(['$stateProvider',
 	function($stateProvider) {
 		// Owners state routing
 		$stateProvider.
+		state('draft', {
+			url: '/draft',
+			templateUrl: 'modules/owners/views/chat.client.view.html'
+		}).
 		state('chat', {
 			url: '/chat',
 			templateUrl: 'modules/owners/views/chat.client.view.html'
@@ -12,10 +16,6 @@ angular.module('owners').config(['$stateProvider',
 		state('allowners', {
 			url: '/allowners',
 			templateUrl: 'modules/owners/views/allowners.client.view.html'
-		}).
-		state('draft', {
-			url: '/draft',
-			templateUrl: 'modules/owners/views/draft.client.view.html'
 		}).
 		state('trade', {
 			url: '/trade',

@@ -19,13 +19,15 @@ var express = require('express'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	path = require('path'),
+	app = express(),
+    server = http.createServer(app),
+    io = require('socket.io').listen(server);
+
 
 module.exports = function(db) {
-	// Initialize express app
-	var app = express();        
-    var server = http.createServer(app);    
-    var io = require('socket.io').listen(server);
+	// Initialize socket functions
+    require('../app/controllers/socket.server.controller')(io);
 
 	// Globbing model files
 	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
@@ -153,15 +155,6 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-    
-    io.on('connection', function(socket){
-        socket.broadcast.emit('user connected');
-        
-         socket.on('send msg', function(msg){
-            console.log(msg.user + ': ' + msg.msg); 
-             io.emit('addChat', msg);
-         });
-    });
     
 	return server;
 };

@@ -55,6 +55,9 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
             req.unavailable=$scope.player.unavailable;
             req.owner=$scope.player.owner;
             req.contractYear=$scope.player.contractYear;
+            req.rookie=$scope.player.rookie;
+            
+            console.log(req.owner._id);
 
             $http.put('/playerUpdate',req).
                 success(function(data, status){
