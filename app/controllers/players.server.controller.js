@@ -69,7 +69,7 @@ exports.update = function(req, res) {
 		} else {        
             player.team=req.body.team;
             player.byeWeek=req.body.byeWeek;
-            player.price[1]=req.body.price;
+            player.price=req.body.price;
             player.available=req.body.available;
             player.unavailable=req.body.unavailable;
             player.owner=req.body.owner._id;

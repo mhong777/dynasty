@@ -50,14 +50,14 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
             req.playerId=$scope.player._id;
             req.team=$scope.player.team;
             req.byeWeek=$scope.player.byeWeek;
-            req.price=$scope.player.price[1];
+            req.price=$scope.player.price;
             req.available=$scope.player.available;
             req.unavailable=$scope.player.unavailable;
             req.owner=$scope.player.owner;
             req.contractYear=$scope.player.contractYear;
             req.rookie=$scope.player.rookie;
             
-            console.log(req.owner._id);
+            console.log(req);
 
             $http.put('/playerUpdate',req).
                 success(function(data, status){
