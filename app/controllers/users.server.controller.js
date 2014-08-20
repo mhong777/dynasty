@@ -32,6 +32,21 @@ var getErrorMessage = function(err) {
 	return message;
 };
 
+exports.addOwner=function(req,res){
+    //get user
+    User.findById('53aa16f715280e0f07029dd9').exec(function(err, user) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+            user.ownerId='53b9dac03391bfbf8a2e3e05';
+            user.save();
+            res.jsonp(user);
+        }
+	});         
+};
+
 //get all users
 exports.getAllUsers=function(req, res, next){
     res.send('works');

@@ -54,6 +54,10 @@ var UserSchema = new Schema({
 		required: 'Please fill in a username',
 		trim: true
 	},
+    ownerId:{
+        type:Schema.ObjectId, 
+        ref:'Owner'  
+    },
 	password: {
 		type: String,
 		default: '',

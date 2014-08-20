@@ -12,6 +12,9 @@ module.exports = function(app) {
 	app.route('/users').put(users.update);
 	app.route('/users/password').post(users.changePassword);
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
+    
+	app.route('/addOwner')
+		.put(users.addOwner)
 
 	//Get All Users
 //    app.route('/users/allUsers')

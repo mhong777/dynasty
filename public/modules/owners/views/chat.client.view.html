@@ -1,11 +1,147 @@
 <section data-ng-controller="ChatController">
-	This is the Chat
-	
-	<div class="chatRm">
-        {{msgs}}
-	    <ul ng-repeat="msg in msgs">
-	           <li>{{msg.user}}: {{msg.msg}}</li>
-	    </ul>
-	    <input ng-model="newMsg" /><button class="btn btn-default" ng-Click="sendMsg()">Test Chat</button>
+<button class="btn btn-default" ng-Click="makeInitialBid()">InitialBid</button>
+	<div class="row">
+	    <div class="col-md-2">
+            <h4>Auction Results</h4>
+	        
+	    </div>
+	    <div class="col-md-6">
+            <h2>Nominated Player</h2>
+            <h4>Current Bid: {{currentBid | currency}}</h4>
+            <h5>(Bid Owner: {{currentBidder}})</h5><br/>
+            Absolute Rank: <br/>
+            Position Rank: <br/><br/>
+            
+            <h4>Make a Bid</h4>
+            Enter Bid: <input type="number"
+                   ng-model="myBid"> <button class="btn btn-default" ng-Click="submitBid()">Submit Bid</button><br/>
+            Min Bid: {{minBid}}<br/>
+            Max Bid: {{maxBid}}
+            
+            <h4>Available Players</h4>
+            <div>
+                <h5>Filters</h5>
+                    <div class="dropdown dropfilter">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                        Position: {{filters.position}}
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation" ng-click="filters.position = ''"><a dropdown-toggle>All</a></li>
+                        <li role="presentation" ng-click="filters.position = 'QB'"><a dropdown-toggle>QB</a></li>
+                        <li role="presentation" ng-click="filters.position = 'WR'"><a dropdown-toggle>WR</a></li>
+                        <li role="presentation" ng-click="filters.position = 'RB'"><a dropdown-toggle>RB</a></li>
+                        <li role="presentation" ng-click="filters.position = 'TE'"><a dropdown-toggle>TE</a></li>
+                        <li role="presentation" ng-click="filters.position = 'K'"><a dropdown-toggle>K</a></li>
+                        <li role="presentation" ng-click="filters.position = 'DF'"><a dropdown-toggle>DF</a></li>
+                      </ul>
+                    </div>                        
+                    <div class="dropdown dropfilter">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
+                        Availability: {{availableString}}
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation" ng-click="changeAvailable(1)"><a dropdown-toggle>All</a></li>
+                        <li role="presentation" ng-click="changeAvailable(2)"><a dropdown-toggle>Available</a></li>
+                        <li role="presentation" ng-click="changeAvailable(3)"><a dropdown-toggle>Unavailable</a></li>
+                      </ul>
+                    </div>              
+            </div>
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                   <tr>
+                        <th>
+                            <b>Position</b>
+                        </th>
+                        <th>
+                            <b>Name</b>
+                        </th>
+                        <th>
+                            <b>Rank</b>
+                        </th>
+                        <th>
+                            <b>Bye Week</b>
+                        </th>
+                        <th>
+                            <b>2013 Owner</b>
+                        </th>
+                        <th>
+                            <b>Price</b>
+                        </th>                               
+                   </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)">
+                        <td>{{player.position}}</td>
+                        <td>{{player.name}}</td>
+                        <td>{{player.startRank.absRank[1]}} ({{player.position}}{{player.startRank.posRank[1]}})</td>
+                        <td>{{player.byeWeek[1]}}</td>
+                        <td>{{player.owner.name}}</td>
+                        <td>{{player.price[1] | currency}}</td>                
+        <!--
+                        <td>{{player.endRank.absRank[0]}} ({{player.position}}{{player.endRank.posRank[0]}})</td>
+                        <td>{{player.contractYear}}</td>
+        -->                
+                    </tr>
+                </tbody>
+            </table>          
+            
+       
+	    </div>
+	    <div class="col-md-4">
+            <div class="team">
+               <div class="row">
+                   <div class="col-md-6">
+                       <h4>{{myOwner.name}}</h4>    
+                   </div>
+                   <div class="col-md-6">
+                       <h5>Available Cap: {{myCap(myOwner) | currency}}</h5>
+                       <h5>Available Roster Spots: {{22-totalPlayers(myOwner)}}</h5>
+                   </div>
+               </div>
+                
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                       <tr>
+                            <th>
+                                <b>Name</b>
+                            </th>
+                            <th>
+                                <b>Salary</b>
+                            </th>
+                            <th>
+                                <b>Contract Year</b>
+                            </th>               
+                            <th>
+                                <b>Bye Week</b>
+                            </th>
+                       </tr>
+                    </thead>
+                    <tbody ng-repeat="positionType in myOwner.paidPlayer | orderBy:positionList">
+                        <tr>
+                            <td colspan="5" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players: {{salaryPosition(positionType.name, owner) | currency}})</td>                        
+                        </tr>
+                        <tr ng-repeat="paidPlayer in positionType.roster">
+                            <td ng-click="goToEspn(paidPlayer.link)">{{paidPlayer.name}} ({{paidPlayer.team}}) {{paidPlayer.startRank.absRank[1]}} ({{paidPlayer.position}}{{paidPlayer.startRank.posRank[1]}})</td>
+                            <td>{{paidPlayer.price[1] | currency}}</td>
+                            <td>{{paidPlayer.contractYear}}</td>
+                            <td>{{paidPlayer.byeWeek[1]}}</td>                
+                        </tr>
+                    </tbody>
+                </table>                    
+            </div>
+            
+            <div class="chatRm">
+                <ul ng-repeat="msg in msgs">
+                       <li>{{msg.user}}: {{msg.msg}}</li>
+                </ul>
+                <input ng-model="newMsg" /><button class="btn btn-default" ng-Click="sendMsg()">Test Chat</button>
+            </div>	        
+	    </div>
 	</div>
+	
+	
+	
 </section>

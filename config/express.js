@@ -26,8 +26,6 @@ var express = require('express'),
 
 
 module.exports = function(db) {
-	// Initialize socket functions
-    require('../app/controllers/socket.server.controller')(io);
 
 	// Globbing model files
 	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
@@ -155,6 +153,9 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+    
+    // Initialize socket functions
+    require('../app/controllers/socket.server.controller')(io);
     
 	return server;
 };
