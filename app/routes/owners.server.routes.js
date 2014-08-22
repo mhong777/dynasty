@@ -34,6 +34,9 @@ module.exports = function(app) {
     
     app.route('/executeTrade')
         .put(owners.executeTrade);
+
+    app.route('/draftList')
+        .get(owners.draftList);    
     
 	// Finish by binding the Owner middleware
 	app.param('ownerId', owners.ownerByID);

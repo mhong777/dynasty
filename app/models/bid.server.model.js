@@ -26,14 +26,16 @@ var BidSchema = new Schema({
 	},
     owner:{
         type: Schema.ObjectId,
-        ref: 'Owner'
+        ref: 'Owner',
+        default: null
     },
     ownerName:{
         type: String  
     },
     player:{
         type: Schema.ObjectId,
-        ref: 'Player'
+        ref: 'Player',
+        default: null
     },
     playerName:{
         type: String  

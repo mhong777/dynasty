@@ -111,6 +111,21 @@ exports.list = function(req, res) { Owner.find().sort('-created').populate('paid
 	});
 };
 
+/*******
+ * List of Owners
+ * For draft
+ ******/
+exports.draftList = function(req, res) { Owner.find().sort('-created').populate('paidPlayer.roster').exec(function(err, owners) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(owners);
+		}
+	});
+};
+
 
 /****
 *MAIN FUNCTION WHEN YOU CUT A PLAYER

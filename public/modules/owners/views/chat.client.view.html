@@ -1,12 +1,15 @@
 <section data-ng-controller="ChatController">
 <button class="btn btn-default" ng-Click="makeInitialBid()">InitialBid</button>
+<button class="btn btn-default" ng-Click="addOwners()">Associate Users</button>
+<button class="btn btn-default" ng-Click="iterateIndex()">Cycle Through Users</button>
+    <br/>{{bids}}
 	<div class="row">
 	    <div class="col-md-2">
             <h4>Auction Results</h4>
 	        
 	    </div>
-	    <div class="col-md-6">
-            <h2>Nominated Player</h2>
+	    <div class="col-md-5">
+            <h2>{{nomPlayer}}</h2>
             <h4>Current Bid: {{currentBid | currency}}</h4>
             <h5>(Bid Owner: {{currentBidder}})</h5><br/>
             Absolute Rank: <br/>
@@ -18,7 +21,7 @@
             Min Bid: {{minBid}}<br/>
             Max Bid: {{maxBid}}
             
-            <h4>Available Players</h4>
+            <h4>Available Players: <span>{{nomError}}</span></h4>
             <div>
                 <h5>Filters</h5>
                     <div class="dropdown dropfilter">
@@ -52,6 +55,9 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                    <tr>
+                        <th ng-show="nomBool">
+                            Nominate
+                        </th>                       
                         <th>
                             <b>Position</b>
                         </th>
@@ -64,22 +70,15 @@
                         <th>
                             <b>Bye Week</b>
                         </th>
-                        <th>
-                            <b>2013 Owner</b>
-                        </th>
-                        <th>
-                            <b>Price</b>
-                        </th>                               
                    </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)">
+                        <td ng-show="nomBool"><button type="button" class="btn btn-default" ng-Click="nominate(player._id, player.available)">Nominate</button></td>
                         <td>{{player.position}}</td>
                         <td>{{player.name}}</td>
                         <td>{{player.startRank.absRank[1]}} ({{player.position}}{{player.startRank.posRank[1]}})</td>
                         <td>{{player.byeWeek[1]}}</td>
-                        <td>{{player.owner.name}}</td>
-                        <td>{{player.price[1] | currency}}</td>                
         <!--
                         <td>{{player.endRank.absRank[0]}} ({{player.position}}{{player.endRank.posRank[0]}})</td>
                         <td>{{player.contractYear}}</td>
@@ -90,7 +89,7 @@
             
        
 	    </div>
-	    <div class="col-md-4">
+	    <div class="col-md-5">
             <div class="team">
                <div class="row">
                    <div class="col-md-6">
@@ -121,7 +120,7 @@
                     </thead>
                     <tbody ng-repeat="positionType in myOwner.paidPlayer | orderBy:positionList">
                         <tr>
-                            <td colspan="5" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players: {{salaryPosition(positionType.name, owner) | currency}})</td>                        
+                            <td colspan="5" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players)</td>                        
                         </tr>
                         <tr ng-repeat="paidPlayer in positionType.roster">
                             <td ng-click="goToEspn(paidPlayer.link)">{{paidPlayer.name}} ({{paidPlayer.team}}) {{paidPlayer.startRank.absRank[1]}} ({{paidPlayer.position}}{{paidPlayer.startRank.posRank[1]}})</td>

@@ -43,7 +43,8 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
                         totSalary+=owner.paidPlayer[i].roster[y].price[1];    
                     }                
                 }
-                totSalary+=owner.additionalCap;
+                totSalary+=owner.additionalCap;                
+                $scope.owner.totalCap=totSalary;
                 return totSalary;
             };
 
@@ -70,9 +71,10 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             };
 
             //define salary cap
-            $scope.salaryCap=300;
+            $scope.salaryCap=175;
             $scope.availableCap=function(){
                 if($scope.owner.totalCap>$scope.salaryCap){
+                    console.log($scope.owner.totalCap);
                     return 'overCap';
                 }  
                 else{

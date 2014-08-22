@@ -95,7 +95,7 @@ exports.delete = function(req, res) {
 /**
  * List of Bids
  */
-exports.list = function(req, res) { Bid.find().sort('-created').populate('user', 'displayName').exec(function(err, bids) {
+exports.list = function(req, res) { Bid.find().sort('-created').populate('owner', 'name').populate('player', 'name').exec(function(err, bids) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -109,7 +109,7 @@ exports.list = function(req, res) { Bid.find().sort('-created').populate('user',
 /**
  * Bid middleware
  */
-exports.bidByID = function(req, res, next, id) { Bid.findById(id).populate('user', 'displayName').exec(function(err, bid) {
+exports.bidByID = function(req, res, next, id) { Bid.findById(id).populate('user', 'displayName').populate('player', 'name').exec(function(err, bid) {
 		if (err) return next(err);
 		if (! bid) return next(new Error('Failed to load Bid ' + id));
 		req.bid = bid ;
