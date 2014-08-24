@@ -55,58 +55,61 @@
                 <td>{{paidPlayer.byeWeek[1]}}</td>                
             </tr>
         </tbody>
-    </table>      
-    <b>Cut</b>
-    <table class="table table-striped table-bordered">
-        <thead>
-           <tr>
-                <th colspan="3">
-                    <b>Name</b>
-                </th>
-                <th>
-                    <b>Salary</b>
-                </th>
-                <th>
-                    <b>2014 Rank</b>
-                </th>
-                <th>
-                    <b>2013 Rank</b>
-                </th>
-                <th>
-                    <b>Contract Year</b>
-                </th>               
-                <th>
-                    <b>Bye Week</b>
-                </th>
-           </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="cutPlayer in owner.cutPlayer">
-                <td ng-show="checkUser()"><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
-                <td>{{cutPlayer.position}}</td>
-                <td ng-hide="checkUser()" ng-click="goToEspn(cutPlayer.link)" colspan="2">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
-                <td ng-show="checkUser()" ng-click="goToEspn(cutPlayer.link)">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
-<!--
-                <td><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
-                <td>{{cutPlayer.position}}</td>
-                <td>{{cutPlayer._id}} {{cutPlayer.name}} ({{cutPlayer.team}})</td>
--->
-                <td>{{cutPlayer.price[1] | currency}}</td>
-                <td>{{cutPlayer.startRank.absRank[1]}} ({{cutPlayer.position}}{{cutPlayer.startRank.posRank[1]}})</td>
-                <td>{{cutPlayer.endRank.absRank[0]}} ({{cutPlayer.position}}{{cutPlayer.endRank.posRank[0]}})</td>
-                <td>{{cutPlayer.contractYear}}</td>
-                <td>{{cutPlayer.byeWeek[1]}}</td>                
-            </tr>
-        </tbody>
-                
-<!--
-        <tbody>
-            <tr ng-repeat="cutPlayer in owner.cutPlayer">
-                <td>{{cutPlayer.name}}</td>
+    </table>   
+    <div ng-show="reviewTime">
+        <b>Cut</b>
+        <table class="table table-striped table-bordered">
+            <thead>
+               <tr>
+                    <th colspan="3">
+                        <b>Name</b>
+                    </th>
+                    <th>
+                        <b>Salary</b>
+                    </th>
+                    <th>
+                        <b>2014 Rank</b>
+                    </th>
+                    <th>
+                        <b>2013 Rank</b>
+                    </th>
+                    <th>
+                        <b>Contract Year</b>
+                    </th>               
+                    <th>
+                        <b>Bye Week</b>
+                    </th>
+               </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cutPlayer in owner.cutPlayer">
+                    <td ng-show="checkUser()"><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
+                    <td>{{cutPlayer.position}}</td>
+                    <td ng-hide="checkUser()" ng-click="goToEspn(cutPlayer.link)" colspan="2">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
+                    <td ng-show="checkUser()" ng-click="goToEspn(cutPlayer.link)">{{cutPlayer.name}} ({{cutPlayer.team}})</td>
+    <!--
+                    <td><input type="checkbox" ng-model="cutPlayer.unavailable" ng-Change="payPlayer(cutPlayer._id, cutPlayer.position )"></td> 
+                    <td>{{cutPlayer.position}}</td>
+                    <td>{{cutPlayer._id}} {{cutPlayer.name}} ({{cutPlayer.team}})</td>
+    -->
+                    <td>{{cutPlayer.price[1] | currency}}</td>
+                    <td>{{cutPlayer.startRank.absRank[1]}} ({{cutPlayer.position}}{{cutPlayer.startRank.posRank[1]}})</td>
+                    <td>{{cutPlayer.endRank.absRank[0]}} ({{cutPlayer.position}}{{cutPlayer.endRank.posRank[0]}})</td>
+                    <td>{{cutPlayer.contractYear}}</td>
+                    <td>{{cutPlayer.byeWeek[1]}}</td>                
+                </tr>
+            </tbody>
 
-            </tr>
-        </tbody>
--->
-    </table>          
+    <!--
+            <tbody>
+                <tr ng-repeat="cutPlayer in owner.cutPlayer">
+                    <td>{{cutPlayer.name}}</td>
+
+                </tr>
+            </tbody>
+    -->
+        </table>           
+    </div>   
+       
     
 </section>

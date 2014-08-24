@@ -1,0 +1,94 @@
+<section data-ng-controller="ChatController">
+	<div class="row">
+	    <div class="col-md-4">
+            <table class="table table-striped table-bordered">
+               <thead>
+                   <tr>
+                       <td>Name</td>
+                       <td>Id</td>
+                   </tr>
+               </thead>
+                <tr>
+                    <td>KevinQuencer</td>
+                    <td>53b9dac03391bfbf8a2e3e36</td>
+                </tr>
+                <tr>
+                    <td>MichaelRamos</td>
+                    <td>53b9dac03391bfbf8a2e3dfe</td>
+                </tr>
+                <tr>
+                    <td>GregFlowers</td>
+                    <td>53b9dac03391bfbf8a2e3e2f</td>
+                </tr>
+                <tr>
+                    <td>MichaelHong</td>
+                    <td>53b9dac03391bfbf8a2e3e05</td>
+                </tr>
+                <tr>
+                    <td>MarkHansberger</td>
+                    <td>53b9dac03391bfbf8a2e3e21</td>
+                </tr>
+                <tr>
+                    <td>JessicaDorn</td>
+                    <td>53b9dac03391bfbf8a2e3e1a</td>
+                </tr>
+                <tr>
+                    <td>NishNarenchania</td>
+                    <td>53b9dac03391bfbf8a2e3e3d</td>
+                </tr>
+                <tr>
+                    <td>DavidMilliner</td>
+                    <td>53b9dac03391bfbf8a2e3e44</td>
+                </tr>
+                <tr>
+                    <td>RossBramlet</td>
+                    <td>53b9dac03391bfbf8a2e3e4b</td>
+                </tr>
+                <tr>
+                    <td>ChristinaKang</td>
+                    <td>53b9dac03391bfbf8a2e3e0c</td>
+                </tr>
+                <tr>
+                    <td>GiovanniPindilli</td>
+                    <td>53b9dac03391bfbf8a2e3e13</td>
+                </tr>
+                <tr>
+                    <td>FrederickGriefer</td>
+                    <td>53b9dac03391bfbf8a2e3e28</td>
+                </tr>
+            </table>	        
+	    </div>
+	    <div class="col-md-8">
+            <h2>Rookie</h2>
+            OwnerName: <input type="text" data-ng-model="eownerName" id="ownerName" class="form-control" required>
+            OwnerId: <input type="text" data-ng-model="eownerId" id="name" class="form-control" required>
+            PlayerId: <input type="text" data-ng-model="eplayerId" id="playerId" class="form-control" required>
+            <button class="btn btn-default" ng-Click="execRookie()">submit</button>
+
+            <hr/>
+
+            <h2>Auction</h2>
+
+            <h3>Nominate</h3>
+            OwnerName: <input type="text" data-ng-model="eownerName" id="ownerName" class="form-control" required>
+            OwnerId: <input type="text" data-ng-model="eownerId" id="name" class="form-control" required>
+            PlayerId: <input type="text" data-ng-model="eplayerId" id="playerId" class="form-control" required>
+            <button class="btn btn-default" ng-Click="execNom()">submit</button>
+
+            <h3>Bid</h3>
+            OwnerName: <input type="text" data-ng-model="eownerName" id="ownerName" class="form-control" required>
+            OwnerId: <input type="text" data-ng-model="eownerId" id="name" class="form-control" required>
+            PlayerId: <input type="text" data-ng-model="eplayerId" id="playerId" class="form-control" required>
+            Amount: <input type="text" data-ng-model="eamount" id="amount" class="form-control" required>
+            <button class="btn btn-default" ng-Click="execBid()">submit</button>
+
+
+
+            <h2>Snake</h2>
+            OwnerName: <input type="text" data-ng-model="eownerName" id="ownerName" class="form-control" required>
+            OwnerId: <input type="text" data-ng-model="eownerId" id="name" class="form-control" required>
+            PlayerId: <input type="text" data-ng-model="eplayerId" id="playerId" class="form-control" required>
+            <button class="btn btn-default" ng-Click="execSnake()">submit</button>    	        
+	    </div>
+	</div>
+</section>

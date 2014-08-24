@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Bid = mongoose.model('Bid'),
+	History = mongoose.model('History'),
 	_ = require('lodash');
 
 /**
@@ -17,7 +17,7 @@ var getErrorMessage = function(err) {
 		switch (err.code) {
 			case 11000:
 			case 11001:
-				message = 'Bid already exists';
+				message = 'History already exists';
 				break;
 			default:
 				message = 'Something went wrong';
@@ -32,96 +32,96 @@ var getErrorMessage = function(err) {
 };
 
 /**
- * Create a Bid
+ * Create a History
  */
 exports.create = function(req, res) {
-	var bid = new Bid(req.body);
-	bid.user = req.user;
+	var history = new History(req.body);
+	history.user = req.user;
 
-	bid.save(function(err) {
+	history.save(function(err) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(bid);
+			res.jsonp(history);
 		}
 	});
 };
 
 /**
- * Show the current Bid
+ * Show the current History
  */
 exports.read = function(req, res) {
-	res.jsonp(req.bid);
+	res.jsonp(req.history);
 };
 
 /**
- * Update a Bid
+ * Update a History
  */
 exports.update = function(req, res) {
-	var bid = req.bid ;
+	var history = req.history ;
 
-	bid = _.extend(bid , req.body);
+	history = _.extend(history , req.body);
 
-	bid.save(function(err) {
+	history.save(function(err) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(bid);
+			res.jsonp(history);
 		}
 	});
 };
 
 /**
- * Delete an Bid
+ * Delete an History
  */
 exports.delete = function(req, res) {
-	var bid = req.bid ;
+	var history = req.history ;
 
-	bid.remove(function(err) {
+	history.remove(function(err) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(bid);
+			res.jsonp(history);
 		}
 	});
 };
 
 /**
- * List of Bids
+ * List of Histories
  */
-exports.list = function(req, res) { Bid.find().sort('-created').populate('owner', 'name').populate('player').populate('rookieNomOwner','name').populate('snakeNomOwner','name').populate('nomOwner','name').exec(function(err, bids) {
+exports.list = function(req, res) { History.find().sort('-created').populate('owner', 'name').populate('player', 'name').exec(function(err, histories) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(bids);
+			res.jsonp(histories);
 		}
 	});
 };
 
 /**
- * Bid middleware
+ * History middleware
  */
-exports.bidByID = function(req, res, next, id) { Bid.findById(id).populate('user', 'displayName').populate('player', 'name').exec(function(err, bid) {
+exports.historyByID = function(req, res, next, id) { History.findById(id).populate('user', 'displayName').exec(function(err, history) {
 		if (err) return next(err);
-		if (! bid) return next(new Error('Failed to load Bid ' + id));
-		req.bid = bid ;
+		if (! history) return next(new Error('Failed to load History ' + id));
+		req.history = history ;
 		next();
 	});
 };
 
 /**
- * Bid authorization middleware
+ * History authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.bid.user.id !== req.user.id) {
+	if (req.history.user.id !== req.user.id) {
 		return res.send(403, 'User is not authorized');
 	}
 	next();

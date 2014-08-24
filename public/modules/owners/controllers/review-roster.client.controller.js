@@ -23,6 +23,8 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
         METRICS
         *************/
         $scope.init=function(){
+            $scope.reviewTime=true;
+            
             //get the total number of players
             $scope.totalPlayers = function(owner){
                 var totPlayer=0;
@@ -83,7 +85,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             };
             //FUNCTION FOR CHECKING USER
             $scope.checkUser=function(){
-                if($scope.authentication.user._id===$scope.owner.userIndex){
+                if($scope.authentication.user._id===$scope.owner.userIndex && $scope.reviewTime){
                     return true;
                 }
                 else{return false;}

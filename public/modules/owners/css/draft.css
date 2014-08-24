@@ -1,0 +1,21 @@
+.draftPlayers{
+    height:200px;
+    overflow-y: scroll;
+}
+.team{
+    height:500px;
+    overflow-y: scroll;
+}
+.midSection{
+    height:500px;
+    overflow: hidden;
+}
+.chat{
+    height:150px;
+    overflow-y: scroll;
+    border: .5px solid black;
+}
+#ownerCheck{
+    width:100%;
+    overflow-x: scroll;
+}

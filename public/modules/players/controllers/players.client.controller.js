@@ -6,20 +6,36 @@ var testPlayer=[
 ];
 
 // Players controller
-angular.module('players').controller('PlayersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Players', '$http',
-	function($scope, $stateParams, $location, Authentication, Players, $http ) {
+angular.module('players').controller('PlayersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Players', '$http', 'socket',
+	function($scope, $stateParams, $location, Authentication, Players, $http, socket ) {
 		$scope.authentication = Authentication;
         
 		// Create new Player
 		$scope.create = function() {
+            var startRank={};
+            startRank.absRank=[0,500];
+            startRank.posRank=[0,500];
+            
 			// Create new Player object
 			var player = new Players ({
-				name: this.name
+				name: this.name,
+                available: true,
+                unavailable: false,
+                contractYear: 0,
+                rookie: $scope.player.rookie,
+                position: $scope.player.position,
+                startRank: startRank
+                
 			});
 
+            
 			// Redirect after save
 			player.$save(function(response) {
-				$location.path('players/' + response._id);
+				$location.path('players/' + response._id + '/edit');
+                
+                //socket update
+                socket.emit('addPlayer', player);
+                
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -30,7 +46,8 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 
 		// Remove existing Player
 		$scope.remove = function( player ) {
-			if ( player ) { player.$remove();
+			if ( player ) { 
+                player.$remove();
 
 				for (var i in $scope.players ) {
 					if ($scope.players [i] === player ) {
@@ -47,15 +64,23 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 		// Update existing Player
 		$scope.update = function() {
             var req={};
+            req.name=$scope.player.name;
             req.playerId=$scope.player._id;
             req.team=$scope.player.team;
             req.byeWeek=$scope.player.byeWeek;
             req.price=$scope.player.price;
             req.available=$scope.player.available;
             req.unavailable=$scope.player.unavailable;
+            
             req.owner=$scope.player.owner;
             req.contractYear=$scope.player.contractYear;
-            req.rookie=$scope.player.rookie;
+            if($scope.player.rookie==='true'){
+                req.rookie=true;    
+            }
+            else{
+                req.rookie=false;    
+            }
+            
             
             console.log(req);
 

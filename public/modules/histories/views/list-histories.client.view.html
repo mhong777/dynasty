@@ -1,0 +1,19 @@
+<section data-ng-controller="HistoriesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Histories</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="history in histories" data-ng-href="#!/histories/{{history._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="history.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="history.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="history.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!histories.$resolved || histories.length">
+    	No Histories yet, why don't you <a href="/#!/histories/create">create one</a>?
+    </div>
+</section>

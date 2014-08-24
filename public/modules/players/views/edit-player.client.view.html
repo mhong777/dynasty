@@ -1,6 +1,7 @@
 <section data-ng-controller="PlayersController" data-ng-init="findOne()">
     <div class="page-header">
         <h3>Edit Player</h3>
+        <button class="btn btn-default" ng-Click="remove(player)">Delete Player</button>             
     </div>
     {{player}}
     <div class="row">
@@ -66,9 +67,9 @@
             <form class="form-horizontal" data-ng-submit="update()" novalidate>
                 <fieldset>
                     <div class="form-group">
-                        <h3>{{player.name}}</h3>
+                        <h3>{{player.name}} {{player.position}}</h3>
                         <div class="controls">
-    <!--                        <input type="text" data-ng-model="player.name" id="name" class="form-control" placeholder="Name" required>-->
+                            <input type="text" data-ng-model="player.name" id="name" class="form-control" placeholder="Name" required>
                             Team: <input type="text" data-ng-model="player.team" id="name" class="form-control" required>
                             bye Week: <input type="text" data-ng-model="player.byeWeek[1]" id="byeWeek" class="form-control" placeholder="0" required>
                             2014 Price: <input type="text" data-ng-model="player.price[1]" id="price" class="form-control" placeholder="0" required>
@@ -91,7 +92,7 @@
                     </div>
                 </fieldset>
             </form>            
-        </div>
+        </div>        
     </div>
 
 </section>

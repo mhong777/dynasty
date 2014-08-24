@@ -51,6 +51,53 @@ var BidSchema = new Schema({
     indexNum:{
         type: Number,
         default: 0
+    },
+    nomStatus:{
+        type: Boolean,
+        default: false
+    },
+    nomOwner:{
+        type: Schema.ObjectId,
+        ref: 'Owner',
+        default: null
+    },
+    rookieDraft:{
+        type: Boolean,
+        default: false
+    },
+    auctionDraft:{
+        type: Boolean,
+        default: true
+    },
+    snakeDraft:{
+        type: Boolean,
+        default: false
+    },
+    rookieDraftIndex:{
+        type: Number,
+        default: 0
+    },
+    rookieNomOwner:{
+        type: Schema.ObjectId,
+        ref: 'Owner',
+        default: null        
+    },
+    snakeDraftIndex:{
+        type: Number,
+        default: 0
+    },
+    snakeNomOwner:{
+        type: Schema.ObjectId,
+        ref: 'Owner',
+        default: null        
+    },
+    endAuction:{
+        type: Boolean,
+        default: false
+    },
+    endSnake:{
+        type: Boolean,
+        default: false
     }
 });
 

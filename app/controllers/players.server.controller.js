@@ -67,12 +67,15 @@ exports.update = function(req, res) {
 				message: getErrorMessage(err)
 			});
 		} else {        
+            player.name=req.body.name;
             player.team=req.body.team;
             player.byeWeek=req.body.byeWeek;
             player.price=req.body.price;
             player.available=req.body.available;
             player.unavailable=req.body.unavailable;
-            player.owner=req.body.owner._id;
+            if(player.owner){
+                player.owner=req.body.owner._id;                
+            }
             player.contractYear=req.body.contractYear;
             player.rookie=req.body.rookie;
             player.save();
@@ -107,10 +110,12 @@ exports.delete = function(req, res) {
 
 	player.remove(function(err) {
 		if (err) {
+            console.log('not delted');
 			return res.send(400, {
 				message: getErrorMessage(err)
 			});
 		} else {
+            console.log('player deleted');
 			res.jsonp(player);
 		}
 	});

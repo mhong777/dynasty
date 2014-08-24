@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
     Player = mongoose.model('Player'),
 	Bid = mongoose.model('Bid'),    
 	User = mongoose.model('User'),    
+    History = mongoose.model('History'),    
 	_ = require('lodash');
     
     
@@ -20,43 +21,59 @@ var mongoose = require('mongoose'),
          });
         
         /********
+        GOING ONCE
+        *********/
+         socket.on('going once', function(){
+             io.emit('goingOnceIn', 'Going Once');
+         });
+
+        /********
+        GOING TWICE
+        *********/
+         socket.on('going twice', function(){
+             io.emit('goingTwiceIn', 'Going Twice');
+         });
+        
+        
+        /********
         CYCLE FUNCTION
         *********/
         socket.on('iterate index', function(cycleReq){
-//owner
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e28"), "name" : "FrederickGriefer" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e13"), "name" : "GiovanniPindilli" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e0c"), "name" : "ChristinaKang" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e4b"), "name" : "RossBramlet" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e44"), "name" : "DavidMilliner" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e3d"), "name" : "NishNarenchania" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e1a"), "name" : "JessicaDorn" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e21"), "name" : "MarkHansberger" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e05"), "name" : "MichaelHong" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e2f"), "name" : "GregFlowers" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3dfe"), "name" : "MichaelRamos" }
-//{ "_id" : ObjectId("53b9dac03391bfbf8a2e3e36"), "name" : "KevinQuencer" }
-
-            
-            
-            var indexList=['53b9dac03391bfbf8a2e3e28', 
-                               '53b9dac03391bfbf8a2e3e13', 
-                               '53b9dac03391bfbf8a2e3e0c', 
-                               '53b9dac03391bfbf8a2e3e4b', 
-                               '53b9dac03391bfbf8a2e3e44', 
-                               '53b9dac03391bfbf8a2e3e3d', 
-                               '53b9dac03391bfbf8a2e3e1a', 
-                               '53b9dac03391bfbf8a2e3e21', 
-                               '53b9dac03391bfbf8a2e3e05', 
-                               '53b9dac03391bfbf8a2e3e2f', 
-                               '53b9dac03391bfbf8a2e3dfe', 
-                               '53b9dac03391bfbf8a2e3e36'];    
+            console.log('iterate index');
+//            var indexList=['53b9dac03391bfbf8a2e3e28', 
+//                               '53b9dac03391bfbf8a2e3e13', 
+//                               '53b9dac03391bfbf8a2e3e0c', 
+//                               '53b9dac03391bfbf8a2e3e4b', 
+//                               '53b9dac03391bfbf8a2e3e44', 
+//                               '53b9dac03391bfbf8a2e3e3d', 
+//                               '53b9dac03391bfbf8a2e3e1a', 
+//                               '53b9dac03391bfbf8a2e3e21', 
+//                               '53b9dac03391bfbf8a2e3e05', 
+//                               '53b9dac03391bfbf8a2e3e2f', 
+//                               '53b9dac03391bfbf8a2e3dfe', 
+//                               '53b9dac03391bfbf8a2e3e36'];    
+            var indexList=['53b9dac03391bfbf8a2e3e05', '53b9dac03391bfbf8a2e3e05'];
             var userId='',
                 outTest=0,
                 indexNum=cycleReq.indexNum,
                 numPlayers=0,
                 output={},
                 totSalary=0;
+            
+            console.log('indexNum: ' + indexNum);
+            
+            //change marker for ending the snake
+            Bid.findById(cycleReq.bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    console.log('change first');
+                    bidBody.endAuction=true;
+                    bidBody.save();        
+                }
+            });              
             
             Owner.find().populate('paidPlayer.roster').exec(function(err, owners) {
                 if (err) {
@@ -66,7 +83,7 @@ var mongoose = require('mongoose'),
                 } else {
                     for(var x=0;x<indexList.length;x++){
                         //iterate index
-                        if(indexNum===11){
+                        if(indexNum>=indexList.length-1){
                             indexNum=0;
                         }
                         else{
@@ -74,6 +91,7 @@ var mongoose = require('mongoose'),
                         }
                         //find owner id
                         userId=indexList[indexNum];    
+                        console.log('userId: ' + userId);
                         //get the owner
                         for(var y=0;y<owners.length;y++){
                             if(userId==owners[y]._id){                                                                
@@ -88,11 +106,11 @@ var mongoose = require('mongoose'),
                                     }                
                                 }
                                 totSalary+=owners[y].additionalCap;
-                                                                                                
-                                if(totSalary<=315 && numPlayers<22){
+//                                console.log(totSalary);
+                                if(totSalary<=314 && numPlayers<22){
                                     //check if the person fits
                                     outTest=1;
-                                    console.log(userId + ': ' + owners[y].name + ' ' + indexNum);
+//                                    console.log(userId + ': ' + owners[y].name + ' ' + indexNum);
                                     console.log(totSalary + ': ' + numPlayers);    
                                     output.indexNum=indexNum;
                                     output.owner=owners[y];
@@ -104,82 +122,46 @@ var mongoose = require('mongoose'),
                                                 message: getErrorMessage(err)
                                             });
                                         } else {
+                                            console.log('bid');
                                             bidBody.indexNum=indexNum;
+                                            bidBody.nomOwner=userId;
+                                            bidBody.amount=0;
+                                            bidBody.owner=null;
+                                            bidBody.player=null;
+                                            bidBody.nomStatus=false;
+                                            bidBody.endAuction=false;
                                             bidBody.save();
-//                                            console.log(cycleReq.indexNum);
-                                             io.emit('getIndex',output);                    
+                                            console.log('end Auction: ' + bidBody.endAuction);
+                                            io.emit('getIndex',output);
                                         }
                                     });  
-                                    
-                                    
                                 }
                             }
                         }
-                        if(outTest===1){
-                            break;
-                        }                        
+                    }
+                    io.emit('auctionCheck','auctionCheck');
+                }                
+            });      
+        });        
+        //check the auction
+        socket.on('cycle2', function(input){    
+            console.log('checkAuction');
+            //check if you need to end the draft
+            Bid.findById(input.bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    console.log(bidBody.endAuction);
+                    if(bidBody.endAuction){
+                        io.emit('endAuction','end');
                     }
                 }
-            });                
+            });             
             
-            
-            
-            
-            if(outTest===0){
-                io.emit('testOut', 'second');    
-            }
-            
-            
-            
-            
-            
-            
-            
-//                    bidBody.indexNum=cycleReq.indexNum;
-//                    bidBody.save();
-//                    console.log(cycleReq.indexNum);
-//                     io.emit('getIndex',cycleReq);  
-            
-            
-//        if($scope.user===$scope.authentication.user.ownerId){
-//            if($scope.maxSalary>=1 && 22-$scope.totalPlayers($scope.myOwner)>0){
-//                $scope.bids[0].indexNum=nextUser.indexNum;
-//                $scope.nomBool=true;
-//                $scope.$digest();
-//                console.log('1');                        
-//            }
-//            else if(nextUser.Num===11){
-//                //end draft   
-//                console.log('2');
-//            }
-//            else if(nextUser.indexNum===11){
-//                //reset the draft
-//                console.log('3');
-//                nextUser.indexNum=0;
-////                socket.emit('iterate index',nextUser);              
-//            }            
-//            else{
-//                console.log('4');
-//                nextUser.indexNum++;
-////                socket.emit('iterate index',nextUser);              
-//            }                
-//        }
-//        else{
-//            console.log('5');
-//            nextUser=false;
-//        }                     
-            
-            
-            
-                        
-        });
+        });         
         
-        
-//have list of draft order
-//limits are number of players and cap
-//get player by id - check number of players and cap
-//if they both pass - broadcast id
-//if not move to the next owner        
         
         /********
         NOMINATE FUNCTION
@@ -187,13 +169,21 @@ var mongoose = require('mongoose'),
         socket.on('nominate player', function(nominatedPlayer){
             //update the player nominated
             Bid.findById(nominatedPlayer.bidId).exec(function(err, bidBody) {
+//                console.log(bidBody.player + ' ' + nominatedPlayer.playerId);
                 if (err) {
                     return res.send(400, {
                         message: getErrorMessage(err)
                     });
                 } else {
+                    console.log(bidBody.player + ': ' + nominatedPlayer.playerId);
                     bidBody.player=nominatedPlayer.playerId;
+                    bidBody.amount=1;
+                    bidBody.owner=nominatedPlayer.ownerId;
+                    bidBody.nomStatus=true;
                     bidBody.save();
+                    var output={};
+                    output.ownerId=nominatedPlayer.ownerId;
+                    output.ownerName=bidBody.ownerName;
                     
                     //get player nominated
                     Player.findById(nominatedPlayer.playerId).exec(function(err, player) {
@@ -206,12 +196,8 @@ var mongoose = require('mongoose'),
                             console.log(player.name);
                             player.save();
                             
-                            
-                            //send back the name of the player and id
-                            //get player's name
-                            //send back the name of the player
-                            
-                            io.emit('updateNominate', player);
+                            output.player=player;                            
+                            io.emit('updateNominate', output);
                         }
                     }); 
                 }
@@ -245,6 +231,447 @@ var mongoose = require('mongoose'),
         /********
         DRAFT FUNCTION
         *********/
+        socket.on('draft', function(bidId){
+            Bid.findById(bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    var output={};
+                    output.ownerId=bidBody.owner;
+                    output.playerId=bidBody.player;
+                    output.amount=bidBody.amount;
+                    //get player                    
+                    //get position of player
+                    Player.findById(output.playerId).exec(function(err, player) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+//                            console.log(output.amount);
+                            //add owner and price
+                            player.owner=output.ownerId;
+                            var newPrice=[0,0];
+                            newPrice[0]=player.price[0];
+                            newPrice[1]=output.amount;
+                            player.price=newPrice;
+                            player.contractYear=0;                            
+                            player.save();
+                            output.player=player;
+
+                            //get owner and change owner - put player and in and save
+                            Owner.findById(output.ownerId).exec(function(err, owner) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    //add him to the paidPlayer list
+                                    for(var i=0;i<owner.paidPlayer.length;i++){          
+                                        if(owner.paidPlayer[i].name===output.player.position){
+                                            //put player on paid list
+                                            owner.paidPlayer[i].roster.push(output.player._id);
+                                        }
+                                    }                                      
+                                    owner.save();
+                                    io.emit('updateDraft',output);   
+                                }
+                            });                               
+                        }
+                    });                     
+                }
+            });  
+        });
+        
+        /********
+        ROOKIE DRAFT FUNCTION
+        *********/
+        socket.on('draftRookie', function(input){
+            //figure out how much the rookie costs
+            var value;
+            if(input.index<11){
+                value=10;
+            }
+            else{
+                value=5;
+            }
+            //build output
+            var output={};
+            output.ownerId=input.ownerId;
+            output.playerId=input.playerId;
+            output.amount=value;                        
+            
+            //change the player
+            Player.findById(output.playerId).exec(function(err, player) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //add owner and price
+                    player.owner=input.ownerId;
+                    player.available=false;
+                    player.unavailable=true;
+                    var newPrice=[0,value];
+                    player.price=newPrice;
+                    player.save();
+                    output.player=player;
+                    console.log(player.name + ' ' + player.price[1])
+
+                    //get owner and change owner - put player and in and save
+                    Owner.findById(input.ownerId).exec(function(err, owner) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            //add him to the paidPlayer list
+                            for(var i=0;i<owner.paidPlayer.length;i++){          
+                                if(owner.paidPlayer[i].name===output.player.position){
+                                    //put player on paid list
+                                    owner.paidPlayer[i].roster.push(output.player._id);
+                                }
+                            }                                      
+                            owner.save();             
+                            //send data back
+                            io.emit('rookieUpdate',output);                               
+                        }
+                    });                               
+                }
+            });              
+            //////second output
+            //change the bid and rookie nom owner
+            //array of rookie draft order
+            var draftOrder=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+            //add one to the index
+            var output2={};
+            var newIndex=input.index+1;
+            var newOwner;
+            output.index=newIndex;
+            if(newIndex>draftOrder.length-1){
+                //end the rookie draft
+                io.emit('endRookie');
+                //start the auction
+                
+            }
+            else{
+                newOwner=draftOrder[newIndex];                
+                output2.index=newIndex;
+                
+                //modify bid
+                Bid.findById(input.bidId).exec(function(err, bidBody) {
+                    if (err) {
+                        return res.send(400, {
+                            message: getErrorMessage(err)
+                        });
+                    } else {
+                        bidBody.rookieDraftIndex=newIndex;
+                        bidBody.rookieNomOwner=newOwner;
+                        bidBody.save();                                                                                        
+                    }
+                });                    
+                
+                //get the owner
+                Owner.findById(newOwner).exec(function(err, owner) {
+                    if (err) {
+                        return res.send(400, {
+                            message: getErrorMessage(err)
+                        });
+                    } else {
+                        output2.nomOwner=owner;
+                        //send data back
+                        io.emit('rookieCycle',output2);
+                    }
+                });                  
+                
+                                
+            }
+        });    
+
+        /********
+        SNAKE DRAFT FUNCTION
+        *********/
+        socket.on('draftSnake', function(input){
+            //build output
+            var output={};
+            output.ownerId=input.ownerId;
+            output.playerId=input.playerId;
+            output.amount=1;                        
+            //change the player
+            Player.findById(output.playerId).exec(function(err, player) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(input.ownerId);
+                    //add owner and price
+                    player.owner=input.ownerId;
+                    player.available=false;
+                    player.unavailable=true;
+                    player.contractYear=0;
+                    var newPrice=player.price;
+                    newPrice[1]=1;
+                    player.price=newPrice;
+                    player.save();
+                    output.player=player;
+
+                    //get owner and change owner - put player and in and save
+                    Owner.findById(input.ownerId).exec(function(err, owner) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            //add him to the paidPlayer list
+                            for(var i=0;i<owner.paidPlayer.length;i++){          
+                                if(owner.paidPlayer[i].name===output.player.position){
+                                    //put player on paid list
+                                    owner.paidPlayer[i].roster.push(output.player._id);
+                                }
+                            }                                      
+                            owner.save();
+                            console.log('draft went through');
+                            //send data back
+                            io.emit('snakeUpdate',output);                               
+                        }
+                    });                               
+                }
+            });
+        });
+        socket.on('draftSnake2', function(input){
+            console.log('draftSnake2');
+            //////second output
+            //change the bid and rookie nom owner
+            //array of rookie draft order
+            var indexList=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+            //add one to the index
+            var output2={};            
+            var indexNum=input.index;
+            
+            //change marker for ending the snake
+            Bid.findById(input.bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    bidBody.endSnake=true;
+                    bidBody.save();        
+                }
+            });              
+            
+            Owner.find().populate('paidPlayer.roster').exec(function(err, owners) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    for(var x=0;x<indexList.length;x++){
+                        //iterate index
+                        if(indexNum>=indexList.length-1){
+                            indexNum=0;
+                        }
+                        else{
+                            indexNum++;
+                        }
+                        //find owner id
+                        var userId=indexList[indexNum];  
+                        var totSalary,
+                            numPlayers;
+                        //get the owner
+                        for(var y=0;y<owners.length;y++){
+                            if(userId==owners[y]._id){                                                                
+                                
+                                //calculate the salary and number of players
+                                numPlayers=0;
+                                for(var i=0; i<owners[y].paidPlayer.length;i++){
+                                    numPlayers+=owners[y].paidPlayer[i].roster.length
+                                }
+                                console.log('numPlayers: ' + numPlayers);
+                                if(numPlayers<22){
+                                    //check if the person fits
+                                    output2.index=indexNum;
+                                    output2.nomOwner=owners[y];
+                                    
+                                    //save the bid index
+                                    Bid.findById(input.bidId).exec(function(err, bidBody) {
+                                        if (err) {
+                                            return res.send(400, {
+                                                message: getErrorMessage(err)
+                                            });
+                                        } else {
+                                            bidBody.snakeDraftIndex=indexNum;
+                                            bidBody.snakeNomOwner=output2.nomOwner._id;  
+                                            bidBody.endSnake=false;
+                                            bidBody.save();        
+                                            console.log('drafted' + ' ' + bidBody.endSnake);
+                                            io.emit('snakeCycle',output2);
+                                        }
+                                    });  
+                                }
+                            }
+                        }
+                    }
+                }
+                io.emit('snakeCheck','snakeCheck'); 
+            });  
+            
+        });
+        socket.on('draftSnake3', function(input){    
+            //check if you need to end the draft
+            Bid.findById(input.bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    console.log(bidBody.endSnake);
+                    if(bidBody.endSnake){
+                        io.emit('endSnake','end');
+                    }
+                }
+            });             
+            
+        });            
+        //build snake draft
+        //build the signal to end of rookie draft and snake draft
+        
+        //build the going going gone
+        
+        socket.on('rookie1', function(input){
+            console.log(input); 
+            io.emit('startRookie', 'rookie');
+        });          
+
+        /********
+        START ROOKIE
+        *********/                    
+         socket.on('activateRookie', function(bidId){
+            //save the bid index
+            Bid.findById(bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    bidBody.rookieDraft=true;
+                    bidBody.auctionDraft=false;
+                    bidBody.snakeDraft=false;
+                    bidBody.save();                                                                                        
+                }
+            });               
+             io.emit('startRookie', 'rookie');
+         });    
+
+        /********
+        START AUCTION
+        *********/                    
+         socket.on('activateAuction', function(bidId){
+            //save the bid index
+            Bid.findById(bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    bidBody.rookieDraft=false;
+                    bidBody.auctionDraft=true;
+                    bidBody.snakeDraft=false;
+                    bidBody.save();                                                                                        
+                }
+            });               
+             io.emit('startAuction', 'auction');
+         });          
+        
+        /********
+        END AUCTION
+        *********/
+         socket.on('end auction draft', function(bidId){
+             console.log('end auction draft');
+            //save the bid index
+            Bid.findById(bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    bidBody.rookieDraft=false;
+                    bidBody.auctionDraft=false;
+                    bidBody.snakeDraft=true;
+                    bidBody.save();                                                                                        
+                }
+            });               
+             io.emit('endAuction', 'end');
+         });
+        
+        
+      /*******
+      ADMIN RESET BID TO START
+      *******/
+    socket.on('resetBid', function(bidId){
+        //save the bid index
+        Bid.findById(bidId).exec(function(err, bidBody) {
+            if (err) {
+                console.log(getErrorMessage(err));
+            } else {
+                bidBody.indexNum=8;
+                bidBody.nomOwner='53b9dac03391bfbf8a2e3e05';
+                bidBody.amount=0;
+                bidBody.owner=null;
+                bidBody.player=null;
+                bidBody.nomStatus=false;
+                
+                bidBody.rookieDraft='true';
+                bidBody.auctionDraft='false';
+                bidBody.snakeDraft='false';
+                
+                bidBody.endAuction='false';
+                bidBody.endSnake='false';
+                
+                bidBody.rookieDraftIndex=0;
+                bidBody.rookieNomOwner='53b9dac03391bfbf8a2e3e05';
+                bidBody.snakeNomOwner='53b9dac03391bfbf8a2e3e05';
+                bidBody.save();
+                console.log(bidBody.player);
+            }
+        });      
+        
+        var history;
+        History.find().sort('-created').exec(function(err, histories) {
+            if (err) {
+                console.log(getErrorMessage(err));
+            } else {
+                for(var x=0; x<histories.length;x++){
+                    history=histories[x];
+                    history.remove(function(err) {
+                        if (err) {
+                            console.log(getErrorMessage(err));
+                        } else {
+                            
+                        }
+                    });                
+                }
+            }
+	   });                        
+        
+    });
+
+
+        /*******check add in the history
+        *****/
+        socket.on('addHistory', function(input){
+            var history = new History(input);
+            history.user = '53b9dac03391bfbf8a2e3e05';
+
+            history.save(function(err) {
+                if (err) {
+                    console.log(getErrorMessage(err));
+                } else {                    
+                    io.emit('addLocalHistory', history);
+                    console.log(history.amount);
+                }
+            });
+            
+        });
+        
+        
+        /*****
+        ADD PLAYER
+        *******/
+        socket.on('addPlayer', function(input){
+            io.emit('addPlayerList', input); 
+        });
         
         /********
         ADMIN ADD OWNER FUNCTION
