@@ -154,8 +154,8 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                             }
                         };
                         //figure out if you are allowed to draft the rookie
-                        $scope.snakeBool=function(available){
-                            if($scope.bids[0].snakeDraft && $scope.bids[0].snakeNomOwner._id===$scope.authentication.user.ownerId){
+                        $scope.snakeBool=function(){
+                            if($scope.bids[0].snakeDraft && $scope.bids[0].snakeNomOwner._id===$scope.authentication.user.ownerId && $scope.mySlots()>0){
                                 return true;
                             }
                             else{
@@ -533,7 +533,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 break;
             }
         }                
-        $scope.$digest();
+//        $scope.$digest();
 
         var historyInput={};
         historyInput.playerName=input.player.name;
@@ -610,7 +610,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 break;
             }
         }                
-        $scope.$digest();        
+//        $scope.$digest();        
         $scope.input={};
         $scope.input.bidId=$scope.bids[0]._id;
         $scope.input.index=$scope.bids[0].rookieDraftIndex;
@@ -726,7 +726,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         $scope.adminMsg='';
         $scope.currentBid=0;
         $scope.currentBidder='';
-        $scope.$digest();
+//        $scope.$digest();
         $scope.iterateIndex(); 
         
         var historyInput={};
@@ -793,6 +793,10 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     /*****
     ACTIVATE SNAKE
     ****/
+    socket.on('startSnake',function(msg){
+        socket.emit('end auction draft', $scope.bids[0]._id);
+    });
+    
     //activate SNAKE draft
     $scope.activateSnake=function(){
         socket.emit('end auction draft', $scope.bids[0]._id);
@@ -806,17 +810,19 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     
     $scope.addHistory=function(input){
         var historyTest=true;        
-        if($scope.history.length){
-            historyTest=false;
+        if($scope.history.length===0){
+            console.log('length is 0');
         }
         else{
             for(var x=0; x<$scope.history.length;x++){
+                console.log(input.playerName + ' ' + $scope.history[x].player.name);
                 if(input.playerName===$scope.history[x].player.name){
                     historyTest=false;
+                    console.log('found player');
                 }
             }            
         }
-        console.log('historyTest: ' + historyTest + ' history length: ' + $scope.history.length);
+        console.log(input.playerName + ' historyTest: ' + historyTest + ' history length: ' + $scope.history.length);
         if(historyTest===true){
             var history = new Histories({
                 name:input.playerName,
@@ -829,13 +835,13 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 $http.get('/histories').
                     success(function(data, status){
                         $scope.history=data;
-                    });            
-                $scope.$digest();
+                    });                            
 
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
                 console.log($scope.error);
-            });                      
+            });                
+            $scope.$digest();
         }
   
         
@@ -899,6 +905,11 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     };
     
 
+
+    
+
+    
+    
     
     
 //    //update page

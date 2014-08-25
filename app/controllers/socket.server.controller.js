@@ -139,9 +139,19 @@ var mongoose = require('mongoose'),
                             }
                         }
                     }
-                    io.emit('auctionCheck','auctionCheck');
+                   Bid.findById(cycleReq.bidId).exec(function(err, bidBody) {
+                        if (err) {
+                            return res.send(400, {
+                                message: getErrorMessage(err)
+                            });
+                        } else {
+                            console.log('bid2: ' + bidBody.endAuction);
+                            io.emit('auctionCheck','auctionCheck');
+                        }
+                    });                                                              
                 }                
-            });      
+            });     
+            
         });        
         //check the auction
         socket.on('cycle2', function(input){    
@@ -155,7 +165,7 @@ var mongoose = require('mongoose'),
                 } else {
                     console.log(bidBody.endAuction);
                     if(bidBody.endAuction){
-                        io.emit('endAuction','end');
+                        io.emit('startSnake','end');
                     }
                 }
             });             
@@ -627,23 +637,23 @@ var mongoose = require('mongoose'),
             }
         });      
         
-        var history;
-        History.find().sort('-created').exec(function(err, histories) {
-            if (err) {
-                console.log(getErrorMessage(err));
-            } else {
-                for(var x=0; x<histories.length;x++){
-                    history=histories[x];
-                    history.remove(function(err) {
-                        if (err) {
-                            console.log(getErrorMessage(err));
-                        } else {
-                            
-                        }
-                    });                
-                }
-            }
-	   });                        
+//        var history;
+//        History.find().sort('-created').exec(function(err, histories) {
+//            if (err) {
+//                console.log(getErrorMessage(err));
+//            } else {
+//                for(var x=0; x<histories.length;x++){
+//                    history=histories[x];
+//                    history.remove(function(err) {
+//                        if (err) {
+//                            console.log(getErrorMessage(err));
+//                        } else {
+//                            
+//                        }
+//                    });                
+//                }
+//            }
+//	   });                        
         
     });
 

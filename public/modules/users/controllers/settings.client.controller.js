@@ -39,7 +39,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		};
 
 		// Update a user profile
-		$scope.updateUserProfile = function() {
+		$scope.updateUserProfile = function() {            
 			$scope.success = $scope.error = null;
 			var user = new Users($scope.user);
 
@@ -51,6 +51,19 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 			});
 		};
 
+		// Update a user profile
+		$scope.updateOwnerId = function() {
+			$scope.user.ownerId='53b9dac03391bfbf8a2e3e05';
+			var user = new Users($scope.user);
+
+			user.$update(function(response) {
+				$scope.success = true;
+				Authentication.user = response;
+			}, function(response) {
+				$scope.error = response.data.message;
+			});
+		};        
+        
 		// Change user password
 		$scope.changeUserPassword = function() {
 			$scope.success = $scope.error = null;
