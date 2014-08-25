@@ -175,8 +175,8 @@
                   <td ng-repeat="owner in owners" ng-click="changeUser(owner)">
                       {{owner.name}}<br/>
                       Cap: {{capCalulate(owner) | currency}}<br/>
-                      Spots: {{totalPlayers(owner)}}          <br/><br/>        
-                      <span ng-show="drafting(owner)">Drafting</span>
+                      Spots: {{totalPlayers(owner)}}
+                      <span ng-show="drafting(owner)"><br/><br/>Drafting</span>
                   </td>
               </tr>
           </table>         
