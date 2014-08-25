@@ -805,14 +805,19 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     
     
     $scope.addHistory=function(input){
-        var historyTest=true;
-        for(var x=0; x<$scope.history.length;x++){
-            if(input.playerName===$scope.history[x].player.name){
-                historyTest=false;
-            }
+        var historyTest=true;        
+        if($scope.history.length){
+            historyTest=false;
         }
-        console.log('historyTest: ' + historyTest);
-        if(historyTest){
+        else{
+            for(var x=0; x<$scope.history.length;x++){
+                if(input.playerName===$scope.history[x].player.name){
+                    historyTest=false;
+                }
+            }            
+        }
+        console.log('historyTest: ' + historyTest + ' history length: ' + $scope.history.length);
+        if(historyTest===true){
             var history = new Histories({
                 name:input.playerName,
                 owner:input.ownerId,
