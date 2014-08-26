@@ -172,7 +172,7 @@
      <div id="ownerCheck">
           <table class="table table-striped table-bordered table-hover">
               <tr>
-                  <td ng-repeat="owner in owners" ng-click="changeUser(owner)" ng-class="{true: 'drafting', false: 'notDrafting'}[drafting(owner)]">
+                  <td ng-repeat="owner in owners | orderBy:endRank:true" ng-click="changeUser(owner)" ng-class="{true: 'drafting', false: 'notDrafting'}[drafting(owner)]">
                       {{owner.name}}<br/>
                       Cap: {{capCalulate(owner) | currency}}<br/>
                       Spots: {{totalPlayers(owner)}}

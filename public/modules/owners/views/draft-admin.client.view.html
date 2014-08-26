@@ -19,7 +19,6 @@
 <br/>
     <br/>{{bids}}
 -->
-    {{bids}}
     <h1>{{endMsg}}</h1>
 	<div class="row">
 	    <div class="col-md-2 team">
@@ -188,7 +187,7 @@
      <div id="ownerCheck">
           <table class="table table-striped table-bordered table-hover">
               <tr>
-                  <td ng-repeat="owner in owners" ng-click="changeUser(owner)" ng-class="{true: 'drafting', false: 'notDrafting'}[drafting(owner)]">
+                  <td ng-repeat="owner in owners | orderBy:endRank:true" ng-click="changeUser(owner)" ng-class="{true: 'drafting', false: 'notDrafting'}[drafting(owner)]">
                       {{owner.name}}<br/>
                       Cap: {{capCalulate(owner) | currency}}<br/>
                       Spots: {{totalPlayers(owner)}}
@@ -198,6 +197,9 @@
           </table>         
      </div>
   </div>
+      {{bids}}
+
+  
    <h4>Chat</h4>
     <div class="chatRm">                
       <div class="chat">

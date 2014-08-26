@@ -42,6 +42,12 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         $http.get('/draftList').
             success(function(data, status){
                 $scope.owners=data;
+                //get the end rank of the selected owner - for sorting
+                $scope.endRank=function(selectedOwner){
+                  return selectedOwner.rank[0];  
+                };            
+                
+                
                 /****
                 FIND YOUR ROSTER
                 ***/
