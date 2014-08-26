@@ -1,17 +1,21 @@
 .draftPlayers{
-    height:350px;
+    height:500px;
+    overflow-y: scroll;
+}
+.draftPlayersSmall{
+    height:265px;
     overflow-y: scroll;
 }
 .nonAuction{
-    height:500px;
+    height:550px;
     overflow-y: scroll;
 }
 .team{
-    height:500px;
+    height:550px;
     overflow-y: scroll;
 }
 .midSection{
-    height:500px;
+    height:550px;
     overflow: hidden;
 }
 .chat{
@@ -31,4 +35,8 @@
 .error{
     font-size:1.2em;
     color:red;
+}
+.drafting{
+    background-color:#CCFFCC !important;
+    font-weight:bold;
 }

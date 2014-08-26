@@ -2,8 +2,8 @@
 <!--
     {{draftEligable()}} {{myCap()}} {{mySlots()}} {{nomBool()}}
 <br/>
-    <br/>{{bids}}
--->
+    <br/>
+-->   
     <h1>{{endMsg}}</h1>
 	<div class="row">
 	    <div class="col-md-2 team">
@@ -22,25 +22,24 @@
            <div ng-show="bids[0].auctionDraft">
                 <h3>{{nomPlayer.name}}</h3>
                 <h4>Current Bid: {{currentBid | currency}}</h4>
-                <h5>(Bid Owner: {{currentBidder}})</h5><br/>
-                Absolute Rank: {{nomPlayer.startRank.absRank[1]}}<br/>
-                Position Rank: ({{nomPlayer.position}}{{nomPlayer.startRank.posRank[1]}})<br/><br/>
+                <h5>(Bid Owner: {{currentBidder}})</h5>
+                <b>Absolute Rank:</b> {{nomPlayer.startRank.absRank[1]}}&nbsp;&nbsp;&nbsp;
+                <b>Position Rank:</b> ({{nomPlayer.position}}{{nomPlayer.startRank.posRank[1]}})<br/>
                 <span class="goingStatus">{{adminMsg}}</span>               
                 <div ng-show="draftEligable()">
                     <h4>Make a Bid</h4>
                     Enter Bid: <input type="number"
                            ng-model="myBid"> <button class="btn btn-default" ng-Click="submitBid()">Submit Bid</button><br/>
                     <span class="error">{{bidError}}</span><br/>
-                    Min Bid: {{minBid | currency}}<br/>
-                    Max Bid: {{myCap() | currency}}                
+                    <b>Min Bid:</b> {{minBid | currency}}&nbsp;&nbsp;&nbsp;
+                    <b>Max Bid:</b> {{myCap() | currency}}                
                 </div>
                 <div ng-hide="draftEligable()">
                     <h4>You cannot bid</h4>
                 </div>
             </div>            
-            <h4>Available Players: <span>{{nomError}}</span></h4>
+            <h4>Players: <span>{{nomError}}</span></h4>
             <div>
-                <h5>Filters</h5>
                     <div class="dropdown dropfilter">
                       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
                         Position: {{filters.position}}
@@ -66,9 +65,10 @@
                         <li role="presentation" ng-click="changeAvailable(2)"><a dropdown-toggle>Available</a></li>
                         <li role="presentation" ng-click="changeAvailable(3)"><a dropdown-toggle>Unavailable</a></li>
                       </ul>
-                    </div>              
+                    </div>
+                    <input ng-model="query" />              
             </div>
-            <div class="draftPlayers">
+            <div ng-class="{true: 'draftPlayersSmall', false: 'draftPlayers'}[bids[0].auctionDraft]">
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                        <tr>
@@ -96,7 +96,7 @@
                        </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)" ng-show="rookieDraftBool(player.rookie)">
+                        <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available) | filter:query" ng-show="rookieDraftBool(player.rookie)">
                             <td ng-show="nomBool()"><button ng-show="player.available" type="button" class="btn btn-default" ng-Click="nominate(player._id, player.available)">Nominate</button></td>
                             <td ng-show="rookieBool()"><button ng-show="rookieButtonBool(player.rookie, player.available)" type="button" class="btn btn-default" ng-Click="draftRookie(player._id, player.available)">Draft</button></td>
                             <td ng-show="snakeBool()"><button ng-show="player.available" type="button" class="btn btn-default" ng-Click="draftSnake(player._id, player.available)">Draft</button></td>
@@ -172,7 +172,7 @@
      <div id="ownerCheck">
           <table class="table table-striped table-bordered table-hover">
               <tr>
-                  <td ng-repeat="owner in owners" ng-click="changeUser(owner)">
+                  <td ng-repeat="owner in owners" ng-click="changeUser(owner)" ng-class="{true: 'drafting', false: 'notDrafting'}[drafting(owner)]">
                       {{owner.name}}<br/>
                       Cap: {{capCalulate(owner) | currency}}<br/>
                       Spots: {{totalPlayers(owner)}}

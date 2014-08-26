@@ -85,7 +85,7 @@ angular.module('owners').controller('ReviewRosterController', ['$scope', '$state
             };
             //FUNCTION FOR CHECKING USER
             $scope.checkUser=function(){
-                if($scope.authentication.user._id===$scope.owner.userIndex && $scope.reviewTime){
+                if($scope.authentication.user._id===$scope.owner.userIndex || $scope.authentication.user.ownerId==='53b9dac03391bfbf8a2e3e05'){
                     return true;
                 }
                 else{return false;}

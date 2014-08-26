@@ -40,19 +40,19 @@ var mongoose = require('mongoose'),
         *********/
         socket.on('iterate index', function(cycleReq){
             console.log('iterate index');
-//            var indexList=['53b9dac03391bfbf8a2e3e28', 
-//                               '53b9dac03391bfbf8a2e3e13', 
-//                               '53b9dac03391bfbf8a2e3e0c', 
-//                               '53b9dac03391bfbf8a2e3e4b', 
-//                               '53b9dac03391bfbf8a2e3e44', 
-//                               '53b9dac03391bfbf8a2e3e3d', 
-//                               '53b9dac03391bfbf8a2e3e1a', 
-//                               '53b9dac03391bfbf8a2e3e21', 
-//                               '53b9dac03391bfbf8a2e3e05', 
-//                               '53b9dac03391bfbf8a2e3e2f', 
-//                               '53b9dac03391bfbf8a2e3dfe', 
-//                               '53b9dac03391bfbf8a2e3e36'];    
-            var indexList=['53b9dac03391bfbf8a2e3e05', '53b9dac03391bfbf8a2e3e05'];
+            var indexList=['53b9dac03391bfbf8a2e3e28', 
+                               '53b9dac03391bfbf8a2e3e13', 
+                               '53b9dac03391bfbf8a2e3e0c', 
+                               '53b9dac03391bfbf8a2e3e4b', 
+                               '53b9dac03391bfbf8a2e3e44', 
+                               '53b9dac03391bfbf8a2e3e3d', 
+                               '53b9dac03391bfbf8a2e3e1a', 
+                               '53b9dac03391bfbf8a2e3e21', 
+                               '53b9dac03391bfbf8a2e3e05', 
+                               '53b9dac03391bfbf8a2e3e2f', 
+                               '53b9dac03391bfbf8a2e3dfe', 
+                               '53b9dac03391bfbf8a2e3e36'];    
+//            var indexList=['53b9dac03391bfbf8a2e3e05', '53b9dac03391bfbf8a2e3e05'];
             var userId='',
                 outTest=0,
                 indexNum=cycleReq.indexNum,
@@ -346,7 +346,20 @@ var mongoose = require('mongoose'),
             //////second output
             //change the bid and rookie nom owner
             //array of rookie draft order
-            var draftOrder=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+//            var draftOrder=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+            var draftOrder=['53b9dac03391bfbf8a2e3e28', 
+                               '53b9dac03391bfbf8a2e3e13', 
+                               '53b9dac03391bfbf8a2e3e0c', 
+                               '53b9dac03391bfbf8a2e3e4b', 
+                               '53b9dac03391bfbf8a2e3e44', 
+                               '53b9dac03391bfbf8a2e3e3d', 
+                               '53b9dac03391bfbf8a2e3e1a', 
+                               '53b9dac03391bfbf8a2e3e21', 
+                               '53b9dac03391bfbf8a2e3e05', 
+                               '53b9dac03391bfbf8a2e3e2f', 
+                               '53b9dac03391bfbf8a2e3dfe', 
+                               '53b9dac03391bfbf8a2e3e36'];            
+            
             //add one to the index
             var output2={};
             var newIndex=input.index+1;
@@ -444,7 +457,19 @@ var mongoose = require('mongoose'),
             //////second output
             //change the bid and rookie nom owner
             //array of rookie draft order
-            var indexList=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+//            var indexList=['53b9dac03391bfbf8a2e3e05','53b9dac03391bfbf8a2e3e05'];
+            var indexList=['53b9dac03391bfbf8a2e3e28', 
+                               '53b9dac03391bfbf8a2e3e13', 
+                               '53b9dac03391bfbf8a2e3e0c', 
+                               '53b9dac03391bfbf8a2e3e4b', 
+                               '53b9dac03391bfbf8a2e3e44', 
+                               '53b9dac03391bfbf8a2e3e3d', 
+                               '53b9dac03391bfbf8a2e3e1a', 
+                               '53b9dac03391bfbf8a2e3e21', 
+                               '53b9dac03391bfbf8a2e3e05', 
+                               '53b9dac03391bfbf8a2e3e2f', 
+                               '53b9dac03391bfbf8a2e3dfe', 
+                               '53b9dac03391bfbf8a2e3e36'];            
             //add one to the index
             var output2={};            
             var indexNum=input.index;
@@ -635,8 +660,6 @@ var mongoose = require('mongoose'),
             if (err) {
                 console.log(getErrorMessage(err));
             } else {
-                bidBody.indexNum=8;
-                bidBody.nomOwner='53b9dac03391bfbf8a2e3e05';
                 bidBody.amount=0;
                 bidBody.owner=null;
                 bidBody.player=null;
@@ -650,8 +673,12 @@ var mongoose = require('mongoose'),
                 bidBody.endSnake='false';
                 
                 bidBody.rookieDraftIndex=0;
-                bidBody.rookieNomOwner='53b9dac03391bfbf8a2e3e05';
-                bidBody.snakeNomOwner='53b9dac03391bfbf8a2e3e05';
+                bidBody.snakeDraftIndex=0;
+                bidBody.indexNum=0;
+                
+                bidBody.rookieNomOwner='53b9dac03391bfbf8a2e3e28';
+                bidBody.snakeNomOwner='53b9dac03391bfbf8a2e3e28';
+                bidBody.nomOwner='53b9dac03391bfbf8a2e3e28';
                 bidBody.save();
                 console.log(bidBody.player);
             }
@@ -678,22 +705,73 @@ var mongoose = require('mongoose'),
     });
 
 
-        /*******check add in the history
-        *****/
-        socket.on('addHistory', function(input){
-            var history = new History(input);
-            history.user = '53b9dac03391bfbf8a2e3e05';
+    /*******check add in the history
+    *****/
+    socket.on('addHistory', function(input){
+        var history = new History(input);
+        history.user = '53b9dac03391bfbf8a2e3e05';
 
-            history.save(function(err) {
-                if (err) {
-                    console.log(getErrorMessage(err));
-                } else {                    
-                    io.emit('addLocalHistory', history);
-                    console.log(history.amount);
-                }
-            });
-            
+        history.save(function(err) {
+            if (err) {
+                console.log(getErrorMessage(err));
+            } else {                    
+                io.emit('addLocalHistory', history);
+                console.log(history.amount);
+            }
         });
+
+    });
+        
+        
+    /****
+    CHANGE INDEX
+    ****/
+    socket.on('changeIndex', function(input){
+        //save the bid index
+        Bid.findById(input.bidId).exec(function(err, bidBody) {
+            if (err) {
+                console.log(getErrorMessage(err));
+            } else {
+                if(input.edraftType==='rookie'){
+                    //rookie
+                    bidBody.rookieDraftIndex=input.index;
+                    bidBody.rookieNomOwner=input.ownerId;
+                    console.log('rookie');                    
+                }
+                else if(input.edraftType==='auction'){
+                    //auction
+                    bidBody.amount=0;
+                    bidBody.owner=null;
+                    bidBody.player=null;
+                    bidBody.nomStatus=false;
+                    bidBody.endAuction='false';
+                    bidBody.indexNum=input.index;
+                    bidBody.nomOwner=input.ownerId;
+                    console.log('auction');                    
+                }
+                else if(input.edraftType==='snake'){
+                    //snake
+                    bidBody.endSnake='false';
+                    bidBody.snakeDraftIndex=input.index;
+                    bidBody.snakeNomOwner=input.ownerId;
+                    console.log('snake');
+                }
+                bidBody.save();
+                console.log('changed');
+                io.emit('changeLocalIndex', 'bids');
+            }
+        });             
+        //populate and send back
+//        Bid.find().sort('-created').populate('owner', 'name').populate('player').populate('rookieNomOwner','name').populate('snakeNomOwner','name').populate('nomOwner','name').exec(function(err, bids) {
+//            if (err) {
+//                console.log(getErrorMessage(err));
+//            } else {
+//                console.log('sent bid back');
+//                io.emit('changeLocalIndex', bids);
+//            }
+//	    });        
+    });
+        
         
         
         /*****

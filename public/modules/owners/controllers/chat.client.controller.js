@@ -24,6 +24,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         $scope.nomPlayer={};
         $scope.endMsg='';
         $scope.bidError='';
+        $scope.query='';
         
         $scope.adminShow=function(){
             if($scope.userId==='53b9dac03391bfbf8a2e3dfe' || $scope.userId==='53b9dac03391bfbf8a2e3e05'){
@@ -943,43 +944,38 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         $scope.input.bidId=$scope.bids[0]._id;
         $scope.input.ownerId=$scope.eownerId;
         $scope.input.index=$scope.eIndex;
-        if($scope.edraftType==='rookie'){
-            
-        }
-        else if($scope.edraftType==='auction'){
-            
-        }
-        else if($scope.edraftType==='snake'){
-            
+        $scope.input.edraftType=$scope.edraftType;
+        socket.emit('changeIndex', $scope.input);
+    };
+    //change local index
+    socket.on('changeLocalIndex', function(input){
+        $http.get('/bids').
+            success(function(data, status){
+                $scope.bids=data;
+                $scope.$digest();
+            });
+    });
+    
+    /****
+    CHANGE STYLE
+    ****/
+    $scope.draftStyle=function(){
+        if($scope.bids[0].auctionDraft){
+            return 'draftPlayersSmall';
+        }   
+        else{
+            return 'draftPlayers'
         }
     };
-
-    
-    //add in form to change draft position to specified position
-    //input indexNum and ownerId
     
     //fix the reset bid - start index at zero and set the ownerId for all
     
     //fix the array of owners for draft 
     //for rookies put 2 rounds in
     
-    //add in button to turn everything off - predraft
-    
-    //take off the boolean to hide cut so i can do it during the draft
-    
-    //change the route of the owner page so that other ppl cant get to it 
     
     
     
-    
-//    //update page
-//    socket.on('startSnake',function(){
-//        $scope.bids[0].rookieDraft=false;
-//        $scope.bids[0].auctionDraft=false;
-//        $scope.bids[0].snakeDraft=true;
-//        $scope.$digest();
-//    });    
-//    
     
     
 	}
