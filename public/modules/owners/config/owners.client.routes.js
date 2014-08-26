@@ -30,11 +30,11 @@ angular.module('owners').config(['$stateProvider',
 			templateUrl: 'modules/owners/views/trade.client.view.html'
 		}).
 		state('review-roster', {
-			url: '/review-roster/:ownerId',
+			url: '/review-rosters/:ownerId',
 			templateUrl: 'modules/owners/views/review-roster.client.view.html'
 		}).
 		state('listOwners', {
-			url: '/owners',
+			url: '/owner',
 			templateUrl: 'modules/owners/views/list-owners.client.view.html'
 		}).
 		state('createOwner', {

@@ -545,6 +545,26 @@ var mongoose = require('mongoose'),
         });          
 
         /********
+        PRE DRAFT ALL OFF
+        *********/                    
+         socket.on('preDraft', function(bidId){
+            //save the bid index
+            Bid.findById(bidId).exec(function(err, bidBody) {
+                if (err) {
+                    return res.send(400, {
+                        message: getErrorMessage(err)
+                    });
+                } else {
+                    bidBody.rookieDraft=false;
+                    bidBody.auctionDraft=false;
+                    bidBody.snakeDraft=false;
+                    bidBody.save();                                                                                        
+                }
+            });               
+             io.emit('allOff', 'off');
+         }); 
+        
+        /********
         START ROOKIE
         *********/                    
          socket.on('activateRookie', function(bidId){
@@ -562,7 +582,7 @@ var mongoose = require('mongoose'),
                 }
             });               
              io.emit('startRookie', 'rookie');
-         });    
+         });         
 
         /********
         START AUCTION

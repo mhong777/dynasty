@@ -30,7 +30,7 @@
                     <h4>Make a Bid</h4>
                     Enter Bid: <input type="number"
                            ng-model="myBid"> <button class="btn btn-default" ng-Click="submitBid()">Submit Bid</button><br/>
-                    {{bidError}}<br/>
+                    <span class="error">{{bidError}}</span><br/>
                     Min Bid: {{minBid | currency}}<br/>
                     Max Bid: {{myCap() | currency}}                
                 </div>
@@ -96,7 +96,7 @@
                        </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)">
+                        <tr ng-repeat="player in players | orderBy:rank | filter: listFilter(filters.position, filters.available)" ng-show="rookieDraftBool(player.rookie)">
                             <td ng-show="nomBool()"><button ng-show="player.available" type="button" class="btn btn-default" ng-Click="nominate(player._id, player.available)">Nominate</button></td>
                             <td ng-show="rookieBool()"><button ng-show="rookieButtonBool(player.rookie, player.available)" type="button" class="btn btn-default" ng-Click="draftRookie(player._id, player.available)">Draft</button></td>
                             <td ng-show="snakeBool()"><button ng-show="player.available" type="button" class="btn btn-default" ng-Click="draftSnake(player._id, player.available)">Draft</button></td>

@@ -53,7 +53,7 @@ angular.module('owners').controller('OwnersController', ['$scope', '$stateParams
         
         
         $scope.showRoster=function(ownerId){
-            $location.path('review-roster/' + ownerId);            
+            $location.path('review-rosters/' + ownerId);            
         };        
         
         /******

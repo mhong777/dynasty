@@ -171,6 +171,21 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                                 return false;
                             }
                         };
+                        //boolean for only showing rookie players during rookie portion of draft
+                        $scope.rookieDraftBool=function(rookie){
+                            if($scope.bids[0].rookieDraft){
+                                if(rookie){
+                                    return true;
+                                }
+                                else{
+                                    return false;
+                                }
+                            }
+                            else{
+                                return true;
+                            }
+                        };
+                        
                         $scope.drafting=function(owner){
                             if($scope.bids[0].rookieDraft){
                                 if($scope.bids[0].rookieNomOwner._id===owner._id){
@@ -749,7 +764,23 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     });
 
     
-    
+    /*****
+    PREDRAFT ALL OFF
+    ****/
+    //activate rookie draft
+    $scope.preDraft=function(){
+//        console.log($scope.bids[0]._id);
+        socket.emit('preDraft', $scope.bids[0]._id);
+    };
+    //update page
+    socket.on('allOff',function(msg){
+        $scope.bids[0].rookieDraft=false;
+        $scope.bids[0].auctionDraft=false;
+        $scope.bids[0].snakeDraft=false;
+        $scope.$digest();
+    });
+
+
     /*****
     ACTIVATE ROOKIE
     ****/
@@ -904,10 +935,39 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         socket.emit('draftSnake', $scope.input);                    
     };
     
-
+    /*****
+    ADMIN CHANGE INDEX
+    *****/
+    $scope.changeIndex=function(){
+        $scope.input={};
+        $scope.input.bidId=$scope.bids[0]._id;
+        $scope.input.ownerId=$scope.eownerId;
+        $scope.input.index=$scope.eIndex;
+        if($scope.edraftType==='rookie'){
+            
+        }
+        else if($scope.edraftType==='auction'){
+            
+        }
+        else if($scope.edraftType==='snake'){
+            
+        }
+    };
 
     
-
+    //add in form to change draft position to specified position
+    //input indexNum and ownerId
+    
+    //fix the reset bid - start index at zero and set the ownerId for all
+    
+    //fix the array of owners for draft 
+    //for rookies put 2 rounds in
+    
+    //add in button to turn everything off - predraft
+    
+    //take off the boolean to hide cut so i can do it during the draft
+    
+    //change the route of the owner page so that other ppl cant get to it 
     
     
     
