@@ -78,7 +78,14 @@ exports.update = function(req, res) {
             }
             player.contractYear=req.body.contractYear;
             player.rookie=req.body.rookie;
+            
+            console.log('rank: ' + player.startRank.absRank);
+//            console.log(req.)
+            player.startRank=req.body.startRank;
+            
+            
             player.save();
+            console.log('rank: ' + player.startRank.absRank);
             res.jsonp(player);
         }
 	});  

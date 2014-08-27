@@ -60,8 +60,8 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
 				});
 			}
 		};
-
-		// Update existing Player
+        
+        // Update existing Player
 		$scope.update = function() {
             var req={};
             req.name=$scope.player.name;
@@ -71,9 +71,11 @@ angular.module('players').controller('PlayersController', ['$scope', '$statePara
             req.price=$scope.player.price;
             req.available=$scope.player.available;
             req.unavailable=$scope.player.unavailable;
+            req.startRank=$scope.player.startRank;
             
             req.owner=$scope.player.owner;
             req.contractYear=$scope.player.contractYear;
+            
             if($scope.player.rookie==='true'){
                 req.rookie=true;    
             }
