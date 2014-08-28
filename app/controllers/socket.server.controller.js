@@ -146,7 +146,7 @@ var mongoose = require('mongoose'),
                             });
                         } else {
                             console.log('bid2: ' + bidBody.endAuction);
-                            io.emit('auctionCheck','auctionCheck');
+//                            io.emit('auctionCheck','auctionCheck');
                         }
                     });                                                              
                 }                
@@ -297,7 +297,7 @@ var mongoose = require('mongoose'),
         socket.on('draftRookie', function(input){
             //figure out how much the rookie costs
             var value;
-            if(input.index<11){
+            if(input.index<=11){
                 value=10;
             }
             else{
