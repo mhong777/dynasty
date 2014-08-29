@@ -29,7 +29,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 for(var x=0; x<data.length;x++){
                     if(data[x].player._id!==$scope.checkId){
                         $scope.history.push(data[x]);
-                        $scope.checkId===data[x].player._id;                        
+                        $scope.checkId=data[x].player._id;                        
                         console.log($scope.checkId);
                     }
                 }
