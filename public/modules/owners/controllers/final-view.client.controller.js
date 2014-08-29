@@ -30,10 +30,10 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                     if(data[x].player._id!==$scope.checkId){
                         $scope.history.push(data[x]);
                         $scope.checkId=data[x].player._id;                        
-                        console.log($scope.checkId);
+//                        console.log($scope.checkId);
                     }
                 }
-                console.log(data);
+//                console.log(data);
 //                $scope.history=data;
             });  
     };//end initi function
