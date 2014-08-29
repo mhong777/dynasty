@@ -32,7 +32,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                         $scope.checkId===data[x].player._id;                        
                     }
                 }
-                $scope.history=data;
+//                $scope.history=data;
             });  
     };//end initi function
     $scope.init();
