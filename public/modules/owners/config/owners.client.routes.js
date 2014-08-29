@@ -5,6 +5,10 @@ angular.module('owners').config(['$stateProvider',
 	function($stateProvider) {
 		// Owners state routing
 		$stateProvider.
+		state('final-view', {
+			url: '/final-view',
+			templateUrl: 'modules/owners/views/final-view.client.view.html'
+		}).
 		state('draft-admin', {
 			url: '/draft-admin',
 			templateUrl: 'modules/owners/views/draft-admin.client.view.html'

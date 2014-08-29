@@ -1,0 +1,65 @@
+<section data-ng-controller="FinalViewController"  data-ng-show="authentication.user">
+	<div class="row">
+	    <div class="col-md-2 team">
+            <h4>Auction Results</h4>            
+            <table class="table table-striped table-border">
+                <tr ng-repeat="item in history">
+                   <td>
+                        <b>{{item.player.name}}</b><br/>
+                        {{item.owner.name}}<br/>
+                        {{item.amount | currency}}                       
+                   </td>
+                </tr>
+            </table>
+	    </div>
+	    <div class="col-md-5 midSection">
+            <h4>View User</h4>
+             <div id="ownerCheck">
+                  <table class="table table-striped table-bordered table-hover">
+                      <tr ng-repeat="owner in owners | orderBy:endRank:true" ng-click="changeUser(owner)">
+                          <td >
+                              {{owner.name}}<br/>
+                          </td>
+                      </tr>
+                  </table>         
+             </div>
+	    </div>
+	    <div class="col-md-5 team">
+            <div>
+               <div class="row">
+                   <h4>{{displayOwner.name}}</h4>    
+               </div>
+                
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                       <tr>
+                            <th>
+                                <b>Name</b>
+                            </th>
+                            <th>
+                                <b>Salary</b>
+                            </th>
+                            <th>
+                                <b>Contract Year</b>
+                            </th>               
+                            <th>
+                                <b>Bye Week</b>
+                            </th>
+                       </tr>
+                    </thead>
+                    <tbody ng-repeat="positionType in displayOwner.paidPlayer | orderBy:ownerPositionList">
+                        <tr>
+                            <td colspan="5" class="positionRow"><span class="positionHeader">{{positionType.name}}</span> ({{positionType.roster.length}} Players)</td>                        
+                        </tr>
+                        <tr ng-repeat="paidPlayer in positionType.roster">
+                            <td>{{paidPlayer.name}} ({{paidPlayer.team}}) {{paidPlayer.startRank.absRank[1]}} ({{paidPlayer.position}}{{paidPlayer.startRank.posRank[1]}})</td>
+                            <td>{{paidPlayer.price[1] | currency}}</td>
+                            <td>{{paidPlayer.contractYear}}</td>
+                            <td>{{paidPlayer.byeWeek[1]}}</td>      
+                        </tr>
+                    </tbody>
+                </table>                    
+            </div>            
+	    </div>
+	</div>	        			
+</section>
