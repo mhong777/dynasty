@@ -27,7 +27,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         $http.get('/histories').
             success(function(data, status){
                 for(var x=0; x<data.length;x++){
-                    if(data[x].player._id!==checkId){
+                    if(data[x].player._id!==$scope.checkId){
                         $scope.history.push(data[x]);
                         $scope.checkId===data[x].player._id;                        
                     }
