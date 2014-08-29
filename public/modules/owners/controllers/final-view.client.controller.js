@@ -7,6 +7,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         INITIALIZE VALUES
         ******/        
         $scope.authentication = Authentication;
+        $scope.history=[];
                 
         /******
         GET ALL DATA
@@ -22,8 +23,15 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 $scope.displayOwner=$scope.owners[0];            
             });                   
   		// Find History
+        $scope.checkId='';
         $http.get('/histories').
             success(function(data, status){
+                for(var x=0; x<data.length;x++){
+                    if(data[x].player._id!==checkId){
+                        $scope.history.push(data[x]);
+                        $scope.checkId===data[x].player._id;                        
+                    }
+                }
                 $scope.history=data;
             });  
     };//end initi function
