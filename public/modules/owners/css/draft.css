@@ -6,6 +6,15 @@
     height:265px;
     overflow-y: scroll;
 }
+
+.nonSelectedOwner{
+    
+}
+
+.selectedOwner{
+    background-color:#CCFFCC !important;    
+}
+
 .nonAuction{
     height:550px;
     overflow-y: scroll;
@@ -39,4 +48,8 @@
 .drafting{
     background-color:#CCFFCC !important;
     font-weight:bold;
+}
+.viewingRoster{
+    height:700px;
+    overflow-y:scroll;
 }

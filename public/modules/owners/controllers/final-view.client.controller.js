@@ -8,6 +8,7 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
         ******/        
         $scope.authentication = Authentication;
         $scope.history=[];
+        
                 
         /******
         GET ALL DATA
@@ -20,7 +21,22 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
                 $scope.endRank=function(selectedOwner){
                   return selectedOwner.rank[0];  
                 };            
-                $scope.displayOwner=$scope.owners[0];            
+                for(var x=0; x<data.length;x++){
+                    $scope.owners[x].selected=false;
+                    $scope.owners[x].selectIndex=x;
+                }
+                for(var y=0; y<data.length;y++){
+//                    console.log($scope.owners[y]._id);
+                    if($scope.owners[y]._id==='53b9dac03391bfbf8a2e3e28'){
+//                        console.log('works');
+                        $scope.owners[y].selected=true;
+                        $scope.displayOwner=$scope.owners[y]; 
+                        $scope.selectedOwner=y;
+                        break;
+                    }
+                }                
+                
+                
             });                   
   		// Find History
         $scope.checkId='';
@@ -44,6 +60,10 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     
     $scope.changeUser=function(owner){
         $scope.displayOwner=owner;  
+        $scope.owners[owner.selectIndex].selected=true;
+        $scope.owners[$scope.selectedOwner].selected=false;
+        $scope.selectedOwner=owner.selectIndex;
+        console.log($scope.selectedOwner);
     }; 
     
     /*******
