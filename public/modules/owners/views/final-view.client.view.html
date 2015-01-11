@@ -1,5 +1,13 @@
 <section data-ng-controller="FinalViewController"  data-ng-show="authentication.user">
-	<div class="row">
+	<button type="button" class="btn btn-default" ng-Click="testSocket()">Test Socket</button>
+    <input ng-model="newMsg" />
+     
+      <div class="chat">
+         <span  ng-repeat="msg in msgs"><b>{{msg}}<br/></span>          
+      </div>       
+          {{msgs}}
+    
+    <div class="row">
 	    <div class="col-md-2 viewingRoster">
             <h4>Auction Results</h4>            
             <table class="table table-striped table-border">

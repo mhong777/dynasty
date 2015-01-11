@@ -12,6 +12,14 @@ var mongoose = require('mongoose'),
     io.on('connection', function(socket){
         socket.broadcast.emit('user connected');
         
+        
+        
+        socket.on('testMySocket', function(input){
+            console.log(input);
+            io.emit('sendBackMySocket', input);
+        });
+        
+        
         /********
         CHAT FUNCTION
         *********/

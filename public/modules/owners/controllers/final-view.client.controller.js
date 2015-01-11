@@ -92,8 +92,20 @@ function($scope, $stateParams, $location, Authentication, Owners, $http, socket,
     };    
 
    
-
-
+    
+    $scope.newMsg='';
+    $scope.msgs=[];
+    
+    $scope.testSocket=function(){
+          socket.emit('testMySocket', $scope.newMsg);
+        $scope.newMsg='';
+    };
+    
+    socket.on('sendBackMySocket', function(input){
+        $scope.msgs.push(input);
+        console.log(input); 
+        $scope.$digest();
+    });
 
     
     
